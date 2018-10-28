@@ -1,0 +1,338 @@
+﻿@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $.noConflict();
+
+    jQuery(document).ready(function () {
+        debugger;
+        var SelectedCategoryId='@ViewBag.CategoryId';
+        var selectedState='@ViewBag.selectedState';
+        var selectedDistrictID='@ViewBag.SelectedDistrictId';
+        var SelectedMandalID='@ViewBag.selectedMandalId';
+
+        if(SelectedCategoryId!=""||SelectedCategoryId!=0){jQuery('select[name="ddlCategory"]').find('option[value='+SelectedCategoryId+']').attr("selected",true);}
+
+        if(selectedState!=""){jQuery('select[name="ddlState"]').find('option:contains('+selectedState+')').attr("selected",true);
+            
+            var stagId = jQuery("#ddlState").val();
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+
+            if (stagId != "") {
+                jQuery.ajax({
+                    type: "POST",
+                    url: '@Url.Action("FetchDistricts", "Home")',
+                    data: '{StateId:"' + stagId + '"}',
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        jQuery.each(result, function (i) {
+                            if(selectedDistrictID!=""||selectedDistrictID!=0){
+                                if(result[i].ID== parseInt(selectedDistrictID)){
+                                    jQuery("#ddlDistrict").append(jQuery('<option selected="selected"></option>').val(result[i].ID).html(result[i].Name))
+                                }
+                                else{
+                                    jQuery("#ddlDistrict").append(jQuery('<option></option>').val(result[i].ID).html(result[i].Name))
+                                }
+                            }
+                            else{
+                                jQuery("#ddlDistrict").append(jQuery('<option></option>').val(result[i].ID).html(result[i].Name))
+                            }
+                            
+                        });
+                    },
+                    error: function (response) {
+                        alert('Error Occured');
+                    }
+                });
+            }
+        }
+
+        if(selectedDistrictID!=""||selectedDistrictID!=0){
+            var DistID = selectedDistrictID;
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append(jQuery('<option></option>').val("").html("---Select Mandal---"));
+
+            if (DistID != "") {
+                jQuery.ajax({
+                    type: "POST",
+                    url: '@Url.Action("FetchMandals", "Home")',
+                    data: '{DistrictId:"' + DistID + '"}',
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        jQuery.each(result, function (i) {
+                            if(SelectedMandalID!=""||SelectedMandalID!=0){
+                                if(result[i].ID== parseInt(SelectedMandalID)){
+                                    jQuery("#ddlMandal").append(jQuery('<option selected="selected"></option>').val(result[i].ID).html(result[i].Name))
+                                }
+                                else{
+                                    jQuery("#ddlMandal").append(jQuery('<option></option>').val(result[i].ID).html(result[i].Name))
+                                }
+                            }
+                            else{
+                                jQuery("#ddlMandal").append(jQuery('<option></option>').val(result[i].ID).html(result[i].Name))
+                            }
+                            
+                        });
+                    },
+                    error: function (response) {
+                        alert('Error Occured');
+                    }
+                });
+            }
+        }
+        
+
+        
+        var AdList = null;
+        AdList=@(Html.Raw(Json.Encode(ViewBag.Adlist)));
+        var length=Object.keys(AdList).length;
+
+
+        if(length==0)
+        {
+            jQuery('#tblDisplay').html('<tr><td id="AdListRow" style="padding-top:50px;padding-bottom:50px;padding-left:300px"">No Ads Found For Selected Category</tr></td>');
+        }
+        else
+        {
+            var tblDisplay=jQuery('#tblDisplay');
+            for(i=0;i<length;i++){
+                j=i+1;
+                tblDisplay.append('<tr id="AdListRow"><td style="width:160px;" onclick="fnOpenAd('+AdList[i].AdID+')" ><img src="/PhotoManagement/Compressed/'+AdList[i].AdID+'.jpg" class="DisplayImageclass" onerror="this.onerror=null;callfun(this);"/></td><td><table id="tblDisplayMiddle" style="width:450px"><tr><td onclick="fnOpenAd('+AdList[i].AdID+')" id="AdTitle">'+ AdList[i].txtSubCategoryName + " " + AdList[i].txtQuantity + " " + AdList[i].SellingUnit + " Available for Sale "+'</td></tr><tr><td id="AdCategory"><label>'+AdList[i].Category+'</label></td></tr><tr><td id="AdLocation"><img src="/Content/images/Location.png"  style="width:20px;height: 18px;"  />'+AdList[i].Location+'</td></tr><tr><td id="adDisplayAdLocation" style="padding-top:5px">'+'Posted On:'+(AdList[i].PostedDate)+'</td></tr></table></td><td id="tblDisplayThirdColumn"><table><tr><td ><span id="price">Rs.'+AdList[i].txtPrice+'<span style="font-size:14px;font-family:Verdana,sans-serif;">'+"/"+AdList[i].SellingUnit.slice(0, -1)+'</span>' +'</span></td></tr><tr><td style="Color:Green;padding-top:20px;font-weight:bold">✔ Phone Number Verified</td></tr></table></td></tr>')
+            }
+        }
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber==1){
+            jQuery('a#PreviousPage').attr('disabled', true);
+            jQuery('a#PreviousPage').css("cursor","default");
+            jQuery('#tdPreviousPage').css("color","Grey");
+
+        }
+        if(TotalPageCount==CurrentPageNumber){
+             
+            jQuery('a#PageNext').attr('disabled', true);
+            jQuery('a#PageNext').css("cursor","default");
+            jQuery('#tdPageNext').css("color","Grey");
+
+        }
+        if(TotalPageCount==0){
+            jQuery("#divPaging").hide();
+        }
+    });
+
+    jQuery(function () {jQuery("#ddlState").change(function ()    { fnAdSearch(1);   });  });
+    jQuery(function () {jQuery("#ddlDistrict").change(function () { fnAdSearch(1);   });  });
+    jQuery(function () {jQuery("#ddlMandal").change(function ()   { fnAdSearch(1);   });  });
+
+    jQuery(document).ready(function () {jQuery("#ddlCategory").change(function () {
+
+        CategoryId = jQuery(ddlCategory).val();
+        if(CategoryId!=""){
+            //fnAdSearch(1); 
+            window.location.href = '@Url.Action("AdSearch", "AddPost")?CategoryId=' + CategoryId + '&PageNumber=' + 1;}
+        else{
+            fnAdSearch(1); 
+        }
+    });
+    });
+
+    function fnAdSearch(PageNumber) {
+        debugger;
+        var stateVal = jQuery("#ddlState option:selected").text();
+
+        if (stateVal == "---Select State---") {
+            stateVal = ""; 
+
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+
+
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append(jQuery('<option></option>').val("").html("---Select Mandal---"));
+
+        }
+        var districtVal = jQuery("#ddlDistrict option:selected").text();
+        var districtId=jQuery("#ddlDistrict").val();
+        var mandalVal = jQuery("#ddlMandal option:selected").text();
+        var mandalId=jQuery("#ddlMandal").val();
+        
+        var pageNumber=parseInt(PageNumber);
+        var CategoryVal = jQuery("#ddlCategory option:selected").text();
+        var categoryidVal = jQuery("#ddlCategory").val();
+
+       
+        if (districtVal == "---Select District---") {
+            districtVal = "";
+        }
+        if (mandalVal == "---Select Mandal---") {
+            mandalVal = "";
+        }
+        if (categoryidVal == 0 || categoryidVal == "") {
+            categoryidVal = 0;
+        }
+        if(stateVal==""&&districtVal=="" && mandalVal=="" && categoryidVal==0){
+        }
+        else{
+            window.location.href = '@Url.Action("_AdSearch", "AddPost")?State=' + stateVal + '&District=' + districtVal+'&DistrictId=' + districtId+ '&Mandal=' +mandalVal+'&MandalId='+mandalId+ '&CategoryId=' + categoryidVal+'&PageNumber=' + pageNumber;
+        }
+
+    }
+
+    function fnResetOptions(){
+        jQuery('option:selected', 'select[name="ddlState"]').removeAttr('selected');
+        jQuery('option:selected', 'select[name="ddlDistrict"]').removeAttr('selected');
+        jQuery('option:selected', 'select[name="ddlMandal"]').removeAttr('selected');
+        jQuery('option:selected', 'select[name="ddlCategory"]').removeAttr('selected');}
+
+    function fnOpenAd(ADID){
+        var AdId=ADID;
+        var win = window.open('/AddPost/AdDisplay?AdId='+AdId, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        }
+        else {
+            //Browser has blocked it
+            alert('Please Allow Popups For This Website');
+        }
+    }
+
+    jQuery(document).ready(function() {
+        jQuery("a#PreviousPage").click(function(){
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1){
+                jQuery('a#PreviousPage').attr('disabled', true);
+            }
+            else{
+                fnAdSearch(CurrentPageNumber-1);
+                jQuery('a#PreviousPage').css("color","Blue");
+            }
+            if(TotalPageCount==CurrentPageNumber){
+                jQuery('a#PageNext').attr('disabled', true);
+            }
+        });
+
+        jQuery("a#PageNext").click(function(){
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1){
+                jQuery('a#PreviousPage').attr('disabled', true);
+              
+            }
+            if(TotalPageCount==CurrentPageNumber){
+                jQuery('a#PageNext').attr('disabled', true);
+            }
+            else{
+                fnAdSearch(CurrentPageNumber+1);
+                jQuery('a#PreviousPage').css("color","Blue");
+            }
+        });
+    });
+
+    function fnGoToPage(){
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber>TotalPageCount || CurrentPageNumber==0){
+            alert("Maximum Available Pages Are "+TotalPageCount+".");
+        }
+        else{
+            fnAdSearch(CurrentPageNumber);
+        }
+    }
+    function callfun(obj)
+    {
+        var noimg = "/Content/images/NoImage.jpg";
+        obj.src=noimg;
+    }
+</script>
+<div style="padding-bottom:25px">
+    <label style="font-family:Verdana,sans-serif;font-size:12px;padding-left:25px;padding-bottom:25px;">Select Below Dropdowns To Filter Ads.</label>
+</div>
+
+
+    <div id="divFilterSearchAds" >
+
+        <table id="tblFilter" style="padding-left:20px;">
+            <tr>
+                <td>
+                    <span class="FilterLabels">Select Category</span><br />@Html.DropDownList("ddlCategory", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.CategoryEnums)).Cast<RaiteRaju.ApplicationUtility.CategoryEnums>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select Category---", new { @class = "DropdownList", required = "required" })
+                </td>
+                <td><span class="FilterLabels">Select State</span><br />@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select State---", new { @class = "DropdownList", required = "required" })</td>
+                <td>
+                    <span class="FilterLabels">Select District</span><br /><select id="ddlDistrict" name="ddlDistrict" class="DropdownList" required="required">
+    <option value="">---Select District---</option>
+</select>
+                </td>
+                <td>
+                    <span class="FilterLabels">Select Mandal/Taluka</span><br />
+                    <select id="ddlMandal" name="ddlMandal" class="DropdownList" required="required">
+                        <option value="">---Select Mandal---</option>
+                    </select>
+                </td>
+                </tr>
+        </table>
+    </div>
+
+<div style="height:60px"></div>
+<div id="divaADisplay">
+    <table id="tblDisplay" style="width:100%; border-collapse:collapse"></table>
+</div>
+
+<div id="divPaging" style="padding-top:20px;margin-left:10%">
+    <table style="width:100%;">
+        <tr>
+            <td style="text-align:left;color:blue" id="tdPreviousPage">
+                <a id="PreviousPage" data-value="1" style="cursor:pointer">
+                    <span> < Previous Page </span>
+                </a>
+            </td>
+            <td style="padding:0px 20px 0px 10px">
+                <input id="btnGoToPage" type="button" title="click here to go to selected page" value="Go To Page" onclick="fnGoToPage()" />&nbsp; @Html.TextBox("txtcurrentPageNumber", (int)ViewBag.CurrentPageNumber, new { @class = "form-control" })
+            </td>
+            <td style="padding:0px 40px 0px 20px">
+                <label id="lblTotalPageNumber">showing page @ViewBag.CurrentPageNumber of @ViewBag.TotalPageNumber</label>
+            </td>
+
+            <td style="text-align:right;color:blue" id="tdPageNext">
+                <a id="PageNext" data-value="2" style="cursor:pointer">
+                    <span> NextPage > </span>
+                </a>
+            </td>
+        </tr>
+        @*<tr>
+            <td style="padding-top:50px">
+                <input id="btnGoToHome" style=" background-color:green;
+    border-radius:5px;
+    font-size:14px;
+    color:white;
+    font-weight:bold;
+    height:45px;
+    width:150px;
+    border:none;
+    cursor:pointer;
+    font-family:Verdana,sans-serif;" type="button" title="Go Back to Home" value="Go To Home Page" onclick="window.location.href = '/'" />
+            </td>
+        </tr>*@
+    </table>
+</div>
+
+<div id="divHiddenForSearch" style="display:none">
+    @Html.TextBox("txtHiddenSearchState", (string)@ViewBag.State, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchDistrict", (string)@ViewBag.District, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchMandal", (string)@ViewBag.Mandal, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchCategory", (string)@ViewBag.Category, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchKeyword", (string)@ViewBag.Keyword, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenCategoryId", (Int32)@ViewBag.CategoryId, new { @class = "form-control" })
+    @Html.TextBox("txtClickedOnSearch", null, new { @class = "form-control" })
+</div>

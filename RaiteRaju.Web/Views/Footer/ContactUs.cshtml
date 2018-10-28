@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Shared/_Layout.cshtml";
+}
+
+<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $.noConflict();
+    jQuery(document).ready(function () {
+        jQuery("#Message").html("");
+        jQuery('#tabContactUs').addClass('active');
+    });
+   
+    function fnValidation() {
+        var message = "";
+        var phone = jQuery("#txtPhoneNumber").val(), intRegex = /^[5-9]{1}[0-9]{9}$/;
+
+        if (jQuery("#txtPhoneNumber").val() == "") {
+            message = message + "Please Enter Phone Number.<br />";
+        }
+        else if (phone != "" && intRegex.test(phone) == false) {
+            message = message + "Please Enter Valid Phone Number.<br />";
+        }
+
+        if (jQuery("#txtSubject").val() == "") {
+            message = message + "Please Enter Subject.<br />";
+        }
+        else if (jQuery("#txtSubject").val() != "" && /^[^<>'\"/`%-]*$/.test(jQuery("#txtSubject").val()) == false) {
+            message = message + "Special Characters Are Not Allowed In Subject.<br />";
+        }
+        else if (jQuery("#txtSubject").val().length > 50 || jQuery("#txtSubject").val().length < 4) {
+            message = message + "Subject Should Be Between 4 To 50 Characters.<br />";
+        }
+
+        if (jQuery("#txtContactUsDescription").val() == "") {
+            message = message + "Please Enter Description.<br />";
+        }
+        else if (jQuery("#txtContactUsDescription").val() != "" && /^[^<>'\"/`%-]*$/.test(jQuery("#txtContactUsDescription").val()) == false) {
+            message = message + "Special Characters Are Not Allowed In Description.<br /> ";
+        }
+        else if (jQuery("#txtContactUsDescription").val().length > 200 || jQuery("#txtContactUsDescription").val().length < 4) {
+            message = message + "Description Should Be Between 4 To 200 Characters.<br />";
+        }
+        if (message == "") {
+            return true;
+        }
+        else {
+            jQuery("#Message").html(message).css("color","Red");
+            return false;
+        }
+    }
+
+    function fnContactUs() {
+
+        var form = jQuery("#ContactUsForm").serialize();
+
+        if (fnValidation())
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("ContactUs", "Footer")',
+                dataType: 'json',
+                data: form,
+                success: function (result) {
+                    if (result == 1) {
+                        jQuery("#Message").html("Submitted Successfully, Our Team Will Get In Touch With You.").css("color", "green");;
+                        jQuery("#ContactUsForm")[0].reset();
+                    }
+                    else {
+                        alert("Some Error Occured. Please Try After Sometime.");
+                        window.location.href = '@Url.Action("Home", "Home")';
+                    }
+                },
+                error: function (err) {
+                    jQuery("#Message").html("Some Error Occured. Please Try After Sometime.");
+                }
+            });
+    }
+</script>
+
+
+@using (Html.BeginForm("ContactUs", "Footer", FormMethod.Post, new { id = "ContactUsForm" }))
+{
+    
+    <div  id="divContactUs">
+        <div id="Message" style="padding-left:150px">
+        </div>
+        <table>
+            <tr>
+                <td style="padding-bottom:10px" colspan="2"><h4>Please write here to reach us.</h4></td>
+                
+            </tr>
+            <tr>
+                <td id="tdLeft"><label>Phone Number<span class="MandatoryStars">*</span>:</label></td>
+                <td>@Html.TextBox("txtPhoneNumber", null, new { @class = "form-control", @placeholder = " Please Enter Your Phone Number." })</td>
+            </tr>
+            <tr>
+                <td id="tdLeft"><label>Subject<span class="MandatoryStars">*</span>:</label></td>
+                <td>@Html.TextBox("txtSubject", null, new { @class = "form-control", @placeholder = " Enter Subject [max Lenth:50 char]" })</td>
+            </tr>
+            <tr>
+                <td id="tdLeft"><label>Description<span class="MandatoryStars">*</span>:</label></td>
+                <td>@Html.TextArea("txtContactUsDescription", null, new { @class = "form-control", @placeholder = " Enter Descriptioin [max Lenth:200 char]" })</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" class="clsbutton" style="width:200px;float:left" value="Submit" onclick="fnContactUs()" /></td>
+
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table style="padding-top:50px;padding-left:50px;">
+            <tr>
+                <td style="font-family:Verdana,sans-serif;font-size:18px">Your can also reach us at:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@*<img src="~/Content/images/CEO.jpg" style="height:100px;width:130px" />*@</td>
+                <td style="padding-bottom:20px">Katama Raju<br />Founder & CEO of RaiteRaju<br />CEO@raiteraju.in </td>
+            </tr>
+            <tr>
+                <td>@*<img src="~/Content/images/Suresh_MD.jpg" style="height:100px;width:130px" />*@</td>
+                <td style="padding-bottom:20px">Nandini<br />MD of RaiteRaju<br />support@raiteraju.in</td>
+            </tr>
+            <tr>
+                <td>@*<img src="~/Content/images/Suresh_MD.jpg" style="height:100px;width:130px" />*@</td>
+                <td style="padding-bottom:20px">Suresh<br />MD of RaiteRaju<br />support@raiteraju.in</td>
+            </tr>
+            <tr>
+                <td>@*<img src="~/Content/images/Suresh_MD.jpg" style="height:100px;width:130px" />*@</td>
+                <td style="padding-bottom:20px">Rama Rao<br />MD of RaiteRaju<br />Support@RaiteRaju.in</td>
+            </tr>
+        </table>
+    </div>
+}

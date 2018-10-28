@@ -1,0 +1,86 @@
+﻿
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" /><script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $.noConflict();
+    function fnViewPhoneNumber() {
+        debugger;
+        var ADID=parseInt('@ViewBag.IntAdId');
+        window.location.href= '@Url.Action("AdDisplayWithPhoneNumber", "AddPost")?AdId='+ADID;
+    }
+</script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+
+
+<div style="min-height:1000px;padding-top:35px;padding-left:65px; width:100%;align-content:center">
+    <div style="float: left;border:1px solid #eae2e2;border-radius:5px">
+        <table style="border-collapse:collapse;">
+            <tr>
+                <td colspan="2" id="AdDisplayAdTitle">
+                    @ViewBag.DefinedTitle
+
+                </td>
+                @*<td id="price" style="border-radius:5px;background-color:#00ff90;width:200px">
+                        Rs.@ViewBag.Price /-
+                    </td>*@
+            </tr>
+            <tr><td style="padding-top:10px;padding-left:15px"><img src="~/Content/images/Location.png" style="width:20px;height: 18px;" /><span id="adDisplayAdLocation">@ViewBag.Location</span></td></tr>
+            <tr><td style="padding-bottom:20px;"><span id="adDisplayAdLocation" style="padding-left:32px">Ad Posted on:@ViewBag.AdPostedDate</span></td></tr>
+            @*<tr>
+                <td colspan="2" ></td><td style="padding-left:15px;height:50px;background-color:#b6ff00">@ViewBag.Name<br /> @ViewBag.MobileNumber</td>
+                        </tr>*@
+            <tr>
+                <td colspan="2" id="DisplayImage">
+                    <img src="/PhotoManagement/Actual/@ViewBag.AdId" style="max-width: 500px; max-height:500px;" />
+                </td>
+            </tr>
+            <tr>
+                
+                <td colspan="2" class="adDispalyCells">
+                <table>
+                    <tr>
+                    <td><span class="AdDisplayAdCategory">Ad Category:</span><br /><span class="advalues">@ViewBag.Category</span></td>
+                    <td><span class="AdDisplayAdCategory">Selling Price:</span><br /><span class="advalues">Rs.@ViewBag.Price @ViewBag.DefinedUnit</span></td>
+                    <td><span class="AdDisplayAdCategory">Quantity:</span><br /><span class="advalues">@ViewBag.Quantity&nbsp;@ViewBag.Unit</span></td>
+                   </tr>
+                    </table></td>
+            </tr>
+            <tr>
+                <td class="adDispalyCells" style="max-width:475px"><label class="AdDisplayAdCategory">Description:</label><br /> <span class="advalues" style="word-break: break-all">@ViewBag.Description</span> </td>
+            </tr>
+        </table>
+    </div>
+    <div style="float: left;">
+        <table>
+            <tr>
+                <td id="AdDisplayAdprice">
+                    Rs.@ViewBag.Price<span style="font-size:14px !important">@ViewBag.DefinedUnit</span>
+                </td>
+            </tr>
+            <tr>
+                <td id="adDisplayUserDetails" style="max-width:150px;">
+                    Name:<br />
+                   @ViewBag.Name<br />
+                    @*@ViewBag.MobileNumber<br /><a onclick="fnViewPhoneNumber()" style="text-decoration:none;color:blue;cursor:pointer;padding-left:30px">View Phone Number</a>*@
+                </td>
+            </tr>
+            <tr>
+                <td id="adDisplayUserDetails">
+                    @ViewBag.MobileNumber<br /><a onclick="fnViewPhoneNumber()" style="text-decoration:none;color:blue;cursor:pointer">Click Here to View Phone Number</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img id="PhoneNumberVerifiedImg" src="~/Content/images/Verified.jpg" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

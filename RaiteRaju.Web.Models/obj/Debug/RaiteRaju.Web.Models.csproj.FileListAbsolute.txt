@@ -1,0 +1,10 @@
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.Web.Models\bin\Debug\RaiteRaju.Web.Models.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.Web.Models\bin\Debug\RaiteRaju.Web.Models.pdb
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.pdb
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.Web.Models\bin\Debug\RaiteRaju.Web.Models.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.Web.Models\bin\Debug\RaiteRaju.Web.Models.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.Web.Models\obj\Debug\RaiteRaju.Web.Models.csprojResolveAssemblyReference.cache

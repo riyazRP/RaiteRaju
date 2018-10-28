@@ -1,0 +1,27 @@
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.pdb
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.pdb
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.pdb
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.pdb
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.DAL.pdb
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\bin\Debug\RaiteRaju.Entities.pdb
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.DAL\obj\Debug\RaiteRaju.DAL.pdb

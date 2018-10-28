@@ -1,0 +1,271 @@
+﻿@using RaiteRaju.ApplicationUtility;
+
+<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+    $.noConflict();
+
+
+    function fnOpenAd(ADID){
+
+        var AdId=ADID;
+        var win = window.open('/AddPost/AdDisplay?AdId='+AdId, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please Allow Popups For This Website');
+        }
+       // window.location.href='@Url.Action("AdDisplay", "AddPost")?AdId='+AdId;
+        @*var SearchOption='@ViewBag.SearchOption';
+        var SearchData=null;
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+
+        if(SearchOption=="CATEGORY"){
+            SearchData='@ViewBag.SearchData';
+            window.location.href='@Url.Action("AdDisplay", "AddPost")?AdId='+AdId+'&PageNumber='+CurrentPageNumber+'&CategoryID='+SearchData;
+        }
+        else if(SearchOption=="SEARCH"){
+            SearchData=@(Html.Raw(Json.Encode(ViewBag.SearchData)));
+            window.location.href='@Url.Action("AdDisplay", "AddPost")?State='+SearchData.txtState+'&District='+SearchData.txtDistrict+'&Mandal='+SearchData.txtMandal+'&CategoryId='+SearchData.CategoryId+'&Keyword='+SearchData.TxtKeyWord+'&PageNumber='+CurrentPageNumber+'&AdId='+AdId;
+        }*@
+    }
+
+    jQuery(document).ready(function () {
+        var AdList = null;
+        debugger;
+        AdList=@(Html.Raw(Json.Encode(ViewBag.Adlist)));
+        var length=Object.keys(AdList).length;
+
+        if(length==0)
+        {
+            jQuery('#tblDisplay').html('<tr><td style="padding-top:120px;padding-left:220px"">No Ads Found For Selected Category</tr></td>');
+
+        }
+        else
+        {
+            var tblDisplay=jQuery('#tblDisplay');
+            for(i=0;i<length;i++){
+                j=i+1;
+                tblDisplay.append('<tr id="AdListRow"><td style="width:160px;" onclick="fnOpenAd('+AdList[i].AdID+')" ><img src="/PhotoManagement/'+AdList[i].AdID+'.jpg" class="DisplayImageclass"/></td><td><table id="tblDisplayMiddle" style="width:450px"><tr><td onclick="fnOpenAd('+AdList[i].AdID+')" id="AdTitle">'+AdList[i].Category + " " + AdList[i].txtQuantity + " " + AdList[i].SellingUnit + " at Price Rs." + AdList[i].txtPrice+"/"+AdList[i].SellingUnit.slice(0, -1) +'</td></tr><tr><td id="AdCategory"><label>'+AdList[i].Category+'</label></td></tr><tr><td id="AdLocation"><img src="/Content/images/Location.png" style="width:20px;" />'+AdList[i].Location+'</td></tr><tr><td id="posteddate">'+'Posted On:'+(AdList[i].PostedDate)+'</td></tr></table></td><td id="tblDisplayThirdColumn"><table><tr><td ><span id="price">Rs.'+AdList[i].txtPrice+'<span style="font-size:14px;font-family:Verdana,sans-serif;">'+"/"+AdList[i].SellingUnit.slice(0, -1)+'</span>' +'</span></td></tr><tr><td><img src="/Content/images/Verified.jpg" id="PhoneNumberVerifiedImg"/></td></tr></table></td></tr>')
+            }
+        }
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber==1){
+            jQuery('a#PreviousPage').attr('disabled', true);
+            jQuery('a#PreviousPage').css("cursor","default");
+        }
+        if(TotalPageCount==CurrentPageNumber){
+            jQuery('a#PageNext').attr('disabled', true);
+            jQuery('a#PageNext').css("cursor","default");
+        }
+        if(TotalPageCount==0){
+            jQuery("#divPaging").hide();
+        }
+
+    })
+
+
+
+    jQuery(function () {
+        jQuery("#ddlState").change(function () {
+
+            var stagId= jQuery("#ddlState").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            DistrictList=@(Html.Raw(Json.Encode(ViewBag.DistrictLIst)));
+            var length=Object.keys(DistrictList).length;
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+            for(i=0;i<length;i++){
+                if(DistrictList[i].ID==stagId){
+                    jQuery("#ddlDistrict").append(jQuery('<option></option>').val(DistrictList[i].value).html(DistrictList[i].Name))}
+
+            }})});
+    jQuery(function () {
+        jQuery("#ddlDistrict").change(function () {
+
+            var DistID= jQuery("#ddlDistrict").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            MandalList=@(Html.Raw(Json.Encode(ViewBag.MandalList)));
+            var length=Object.keys(MandalList).length;
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+            for(i=0;i<length;i++){
+                if(MandalList[i].ID==DistID){
+                    jQuery("#ddlMandal").append(jQuery('<option></option>').val(MandalList[i].value).html(MandalList[i].Name))}
+
+            }})});
+
+
+
+    jQuery(document).ready(function() {
+        jQuery("a#PreviousPage").click(function(){
+
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1){
+                jQuery('a#PreviousPage').attr('disabled', true);
+                //jQuery('a#PreviousPage').css("color","grey");
+            }
+            else{
+                if(jQuery("#txtHiddenSearchState").val()=="YES"){
+                    jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:jQuery("#txtHiddenSearchState").val(),District:jQuery("#txtHiddenSearchDistrict").val(),Mandal:jQuery("#txtHiddenSearchMandal").val(),CategoryId:jQuery("#txtHiddenSearchCategory").val(),Keyword:jQuery("#txtHiddenSearchKeyword").val(),PageNumber:CurrentPageNumber-1});
+                }
+                else{
+                    jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:parseInt(jQuery("#txtHiddenCategoryId").val()),PageNumber:CurrentPageNumber-1});
+                }
+            }
+            if(TotalPageCount==CurrentPageNumber){
+                jQuery('a#PageNext').attr('disabled', true);
+                // jQuery('a#PreviousPage').css("color","grey");
+            }
+
+
+        });
+        jQuery("a#PageNext").click(function(){
+            debugger;
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1){
+                jQuery('a#PreviousPage').attr('disabled', true);
+                // jQuery('a#PreviousPage').css("color","grey");
+            }
+            if(TotalPageCount==CurrentPageNumber){
+                jQuery('a#PageNext').attr('disabled', true);
+                //jQuery('a#PreviousPage').css("color","grey");
+            }
+            else{
+                if(jQuery("#txtClickedOnSearch").val()=="YES")
+                {
+                    jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:jQuery("#txtHiddenSearchState").val(),District:jQuery("#txtHiddenSearchDistrict").val(),Mandal:jQuery("#txtHiddenSearchMandal").val(),CategoryId:jQuery("#txtHiddenSearchCategory").val(),Keyword:jQuery("#txtHiddenSearchKeyword").val(),PageNumber:CurrentPageNumber+1});
+                }
+                else
+                {
+                    jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:parseInt(jQuery("#txtHiddenCategoryId").val()),PageNumber:CurrentPageNumber+1});
+                }
+                jQuery('a#PreviousPage').css("color","Blue");
+            }
+        });
+    });
+
+    function fnGoToPage(){
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber>TotalPageCount || CurrentPageNumber==0){
+            alert("Maximum Available Pages Are "+TotalPageCount+".");
+        }
+        else{
+            if(jQuery("#txtHiddenSearchState").val()=="YES")
+            {
+                jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:jQuery("#txtHiddenSearchState").val(),District:jQuery("#txtHiddenSearchDistrict").val(),Mandal:jQuery("#txtHiddenSearchMandal").val(),CategoryId:jQuery("#txtHiddenSearchCategory").val(),Keyword:jQuery("#txtHiddenSearchKeyword").val(),PageNumber:CurrentPageNumber});
+            }
+            else
+            {
+                jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:parseInt(jQuery("#txtHiddenCategoryId").val()),PageNumber:CurrentPageNumber});
+            }
+        }
+    }
+    //jQuery(document).ready(function() {
+    //
+    //    var CurrentPageNumber=jQuery("#PageNext").data("value");
+    //    jQuery('#PreviousPage').data('value',CurrentPageNumber);
+    //    jQuery('#NextPage').data('value',CurrentPageNumber+1);
+    //    jQuery('#txtcurrentPageNumber').val();});
+</script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+
+<style>
+
+
+</style>
+
+@*<div style="padding:10px 0px 10px 0px;background-color:#e0eaf1;border-radius:5px;font-family:Verdana,sans-serif">
+    <table id="tblFilter" style="padding-left:20px;">
+        <tr>
+            <td><span class="FilterLabels">Select State</span><br />@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select State---", new { @class = "DropdownList", required = "required" })</td>
+            <td>
+                <span class="FilterLabels">Select Distrinct</span><br /><select id="ddlDistrict" class="DropdownList" required>
+                    <option value="">---Select District---</option>
+                </select>
+            </td>
+            <td>
+                <span class="FilterLabels">Select Mandal/Taluka</span><br />
+                <select id="ddlMandal" class="DropdownList" required>
+                    <option value="">---Select Mandal---</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="FilterLabels">Select Category</span><br />@Html.DropDownList("ddlCategory", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.CategoryEnums)).Cast<RaiteRaju.ApplicationUtility.CategoryEnums>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select Category---", new { @class = "DropdownList", required = "required" })
+            </td>
+            <td><span class="FilterLabels">Enter any keyword for search</span><br />@Html.TextBox("txtSearchWord", null, new { @class = "form-control" }) </td>
+            <td><br /><input id="btnSearch" type="button" value="Search" onclick="fnAdSearch()" /></td>
+        </tr>
+    </table>
+</div>*@
+<div id="divaADisplay">
+    <table id="tblDisplay" style="width:100%; border-collapse:collapse">
+        @*@for (int i = 1; i <= 6; i++) {
+                string imageName = string.Format("{0}.jpg", i);
+            <tr style="height:150px;border:2px solid #808080">
+                <td><img src="~/PhotoManagement/1.jpg" class="DisplayImageclass" /></td>
+                <td id="tblDisplayMiddle">
+                    <table style="width:450px">
+                        <tr><td><label style="font-family:Arial;font-size:15px;font-weight:bold">THIS IS MY AD TITLE THAT WILL BE SHOWN ON UI</label></td></tr>
+                        <tr><td><label>this is category</label></td></tr>
+                        <tr><td>this is location</td></tr>
+                        <tr><td style="height:20px;"></td></tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr><td><span>Rs.5000/-</span></td></tr>
+                        <tr><td>verified</td></tr>
+                    </table>
+                </td>
+            </tr>
+            }*@
+    </table>
+</div>
+
+<div id="divPaging" style="padding-top:20px;margin-left:10%">
+    <table style="width:100%;">
+        <tr>
+            <td style="text-align:left;color:blue">
+                <a id="PreviousPage" data-value="1" style="cursor:pointer">
+                    <span> < Previous Page </span>
+                </a>
+            </td>
+            <td style="padding:0px 20px 0px 10px">
+                <input id="btnGoToPage" type="button" title="click here to go to selected page" value="Go To Page" onclick="fnGoToPage()" />&nbsp; @Html.TextBox("txtcurrentPageNumber", (int)ViewBag.CurrentPageNumber, new { @class = "form-control" })
+            </td>
+            <td style="padding:0px 40px 0px 20px">
+                <label id="lblTotalPageNumber">showing page @ViewBag.CurrentPageNumber of @ViewBag.TotalPageNumber</label>
+            </td>
+
+            <td style="text-align:right;color:blue">
+                <a id="PageNext" data-value="2" style="cursor:pointer">
+                    <span> NextPage > </span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>

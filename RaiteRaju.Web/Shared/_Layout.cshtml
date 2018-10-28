@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/Style.css"/>
+    <meta name="viewport" content="width=device-width" />
+    <title>Raite Raju</title>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+    $.noConflict();
+    function fnLogout() {
+        window.location.href = '/User/UserLogout';
+    }
+    function fnopenUserSettings() {
+        window.location.href = '/User/UserAccount';
+        fnshowUserSettings();
+    }
+    jQuery(document).ready(function() {
+        jQuery("#tabHome").click(function () {
+            window.location.href = '/';
+        });
+        jQuery("#tabAboutUs").click(function () {
+            window.location.href = '/Footer/AboutUs';
+        });
+        jQuery("#tabHowItWorks").click(function () {
+            window.location.href ="/Footer/HowItWorks";
+        });
+        jQuery("#tabHowToRegister").click(function () {
+            window.location.href ="/Footer/HowToRegister";
+        });
+        jQuery("#tabHowToPostAd").click(function () {
+            window.location.href = "/Footer/HowToPostAd";
+        });
+        jQuery("#tabReportIssue").click(function () {
+            window.location.href = "/Footer/ReportIssue";
+        });
+        jQuery("#tabContactUs").click(function () {
+            window.location.href = "/Footer/ContactUs";
+        });
+    });
+</script>
+</head>
+
+
+<body id="divlayout" @*style="background-color:rgb(226, 237, 220)"*@>
+    <div id="stick_header">
+        <div id="M_1"><a href="/"><img id="logo" src="~/Content/images/logo.jpg" /></a></div>
+        <div id="M_2"><span id="Title">Raite Raju</span><br /><span id="TagLine">Now selling is at farmer's finger tips</span></div>
+        <div id="M_3">
+            <img id="imgLoginIcon" src="~/Content/images/LoginIcon.png" />
+            @* @if (string.IsNullOrEmpty((string)Session["LOGGEDONUSER"]))*@
+            @if (Request.Cookies["_RRUN"] == null)
+            { <div id="divAccount">
+                <span style="color:blue"> <a id="aLogin" href="/User/Login">Login</a>/<a id="aLogin" href="/User/Registration">Register</a></span>
+            </div>
+            }
+            @*@if (!string.IsNullOrEmpty((string)Session["LOGGEDONUSER"]))*@
+            @if (Request.Cookies["_RRUN"] != null)
+            {
+                <div class="dropdownMenu">
+                    <a class="dropbtn" href="/User/UserAccount">
+                        @*@Session["LOGGEDONUSER"].ToString()*@
+                        @Request.Cookies["_RRUN"]["_RRUN"]
+                    </a>
+
+                    <div class="dropdown-content">
+                        <a href="/User/UserAccount">My Ads</a>
+                        <a href="/Footer/ContactUs">Contact Us</a>
+                        <a href="#" onclick="fnLogout()">Logout</a>
+                    </div>
+                </div>  <span class="arrow-down" style="vertical-align:auto;"></span>}
+
+        </div>
+        <div id="M_4">@*<a id="btnSubmitYourAd" href="">Submit Your Ad</a>*@<input id="btnSubmitYourAd" type="button" value="Submit Your Ad" onclick="window.location.href = '/AddPost/AddPost'"></div>
+    </div>
+    <div id="LaytoutTabbar">
+        <div id="topbar-wrapper" class="wrapper">
+
+            <div id="topbar-row" class="row">
+
+                <ul class="tabs1">
+
+                    <li id="tabHome">
+                        <a href="/" tabindex="-1">Home</a>
+                    </li>
+
+                    <li id="tabAboutUs">
+                        <a href="/Footer/AboutUs" tabindex="-1">About Us</a>
+                    </li>
+                    <li id="tabHowItWorks">
+                        <a href="/Footer/HowItWorks" tabindex="-1">How it Works</a>
+                    </li>
+                    <li id="tabHowToRegister">
+                        <a href="/Footer/HowToRegister" tabindex="-1">How To Register</a>
+                    </li>
+
+                    <li id="tabHowToPostAd">
+                        <a href="/Footer/HowToPostAd" tabindex="-1">How to Post Ad</a>
+                    </li>
+
+                    <li id="tabReportIssue">
+                        <a href="/Footer/ReportIssue" tabindex="-1">Report An Issue</a>
+                    </li>
+
+                    <li id="tabContactUs">
+                        <a href="/Footer/ContactUs" tabindex="-1">Contact Us</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="body">
+
+        @RenderBody()
+
+    </div>
+
+    <div id="divfooter">
+        <div id="divfooter_1"><a href="/"><img id="logo" src="~/Content/images/logo.jpg" /></a></div>
+        <div id="divfooter_2">
+            <table id="footerTable">
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/AboutUs">About Us</a></td>
+                    <td><a class="FooterLinks" href="/Footer/TermsAndConditions">Terms & Conditions</a></td>
+                    <td><a class="FooterLinks" href="/Footer/ContactUs">Contact Us</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/Careers">Careers</a></td>
+                    <td><a class="FooterLinks" href="/Footer/ReportIssue">Report an Issue</a></td>
+                    <td><a class="FooterLinks" href="/User/Registration">Register</a></td>
+
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/Reviews">Reviews</a></td>
+                    <td></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" @*href="/Footer/FeaturedAds"*@>@*Feature Ads*@</a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div id="divfooter_3"><table><tr><td><a href="https://www.facebook.com/RaiteRaju-268146037354551/?modal=admin_todo_tour"><img class="social_MediaIcons" src="~/Content/images/FooterIcon1.jpg" /></a></td><td><a href="https://www.instagram.com/raiteraju/"><img class="social_MediaIcons" src="~/Content/images/FooterIcon2.jpg" /></a></td><td><a href="https://twitter.com/RaiteRaju"><img class="social_MediaIcons" src="~/Content/images/FooterIcon3.jpg" /></a></td><td><a href="https://plus.google.com/u/0/104022384172539536216"><img class="social_MediaIcons" src="~/Content/images/FooterIcon4.jpg" /></a></td></tr></table></div>
+    </div>
+</body>
+
+</html>

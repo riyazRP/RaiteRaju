@@ -1,0 +1,335 @@
+﻿@using RaiteRaju.ApplicationUtility;
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+<title> Raiteraju Home</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+    $.noConflict();
+    jQuery(document).ready(function(){
+        jQuery("#divPaging").hide();
+    })
+
+    function fnAdSearch(){
+        
+        debugger;
+        jQuery('#PreviousPage').data('value',1);
+        jQuery('#NextPage').data('value',2);
+
+        var stateVal=jQuery("#ddlState option:selected").text();
+        var districtVal=jQuery("#ddlDistrict option:selected").text();
+        var mandalVal=jQuery("#ddlMandal option:selected").text();
+
+        var CategoryVal = jQuery("#ddlCategory option:selected").text();
+        var categoryidVal=jQuery("#ddlCategory").val();
+        var SearchKeyWordVal=jQuery("#txtSearchWord").val();
+
+        if(stateVal=="---Select State---"){
+            stateVal="";
+        }
+        if(districtVal=="---Select District---"){
+            districtVal="";
+        }
+        if(mandalVal=="---Select Mandal---"){
+            mandalVal="";
+        }
+        if(categoryidVal==0||categoryidVal==""){
+            categoryidVal=0;
+        }
+        if(SearchKeyWordVal==""||SearchKeyWordVal==null){
+            SearchKeyWordVal="";
+        }
+
+
+        jQuery('#txtHiddenSearchState').val(stateVal);
+        jQuery('#txtHiddenSearchDistrict').val(districtVal);
+        jQuery('#txtHiddenSearchMandal').val(mandalVal);
+        jQuery('#txtHiddenSearchCategory').val(categoryidVal);
+        jQuery('#txtHiddenSearchKeyword').val(SearchKeyWordVal);
+        jQuery('#txtClickedOnSearch').val("YES");
+
+        if(stateVal=="" &districtVal =="" & mandalVal ==""& categoryidVal==0 &SearchKeyWordVal==""){
+            alert("Please Select/Enter Searching keyword");
+        }
+    else
+        {
+            jQuery("#divHomeList").hide();
+            jQuery("#divPaging").show();
+         jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:stateVal,District:districtVal,Mandal:mandalVal,CategoryId:categoryidVal,Keyword:SearchKeyWordVal,PageNumber:1});
+        }
+    }
+    function fnAdSearchByCategory(Category){
+
+        var CurrentPageNumber=jQuery('#PreviousPage').val();
+        jQuery('#PreviousPage').data('value',1);
+        jQuery('#NextPage').data('value',2);
+        jQuery("#divAdSearch").load("AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+
+
+        //var DTO = {
+        //    Name: Category
+        //};
+        //e.preventDefault();
+        //$.ajax({
+        //    url: '/AddPost/_AdSearchCategory',
+        //    type: "GET",
+        //    dataType: "html",
+        //    data: DTO,
+        //    cache: false,
+        //    success: function (data) {
+        //        //Fill div with results
+        //        $("#divAdSearch").html(data);
+        //    },
+        //    error: function (xhr, status, error) {
+        //        alert(xhr.responseText);
+        //    }
+        //});
+
+    }
+
+    jQuery(function () {
+        jQuery("#ddlState").change(function () {
+
+            var stagId= jQuery("#ddlState").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            DistrictList=@(Html.Raw(Json.Encode(ViewBag.DistrictLIst)));
+            var length=Object.keys(DistrictList).length;
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+            for(i=0;i<length;i++){
+                if(DistrictList[i].ID==stagId){
+                    jQuery("#ddlDistrict").append(jQuery('<option></option>').val(DistrictList[i].value).html(DistrictList[i].Name))}
+
+            }
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+        })});
+    jQuery(function () {
+        jQuery("#ddlDistrict").change(function () {
+
+            var DistID= jQuery("#ddlDistrict").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            MandalList=@(Html.Raw(Json.Encode(ViewBag.MandalList)));
+            var length=Object.keys(MandalList).length;
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+            for(i=0;i<length;i++){
+                if(MandalList[i].ID==DistID){
+                    jQuery("#ddlMandal").append(jQuery('<option></option>').val(MandalList[i].value).html(MandalList[i].Name))}
+
+            }})});
+
+
+    jQuery(document).ready(function() {
+        jQuery("a.homeLink").click(function(){
+            jQuery("#divHomeList").hide();
+            jQuery("#divPaging").show();
+            Category=jQuery(this).data("value");
+            jQuery('#txtHiddenCategoryId').val(Category);
+            jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+
+        });
+        jQuery("a.AlistingCell").click(function(){
+            jQuery("#divHomeList").hide();
+            Category=jQuery(this).data("value");
+            jQuery('#txtHiddenCategoryId').val(Category);
+            jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+
+        });
+    });
+
+    //jQuery(document).ready(function() {
+    //    jQuery("a#PreviousPage").click(function(){
+    //        var CurrentPageNumber=jQuery("#PreviousPage").data("value");
+    //        CurrentPageNumber=CurrentPageNumber-1;
+    //        jQuery('#txtcurrentPageNumber').val(CurrentPageNumber);
+    //        jQuery('#txtcurrentPageNumber').text(CurrentPageNumber);
+
+    //        if(CurrentPageNumber<=1){
+    //            CurrentPageNumber=1;
+    //            jQuery('#PreviousPage').data('value',CurrentPageNumber);
+    //            jQuery('#NextPage').data('value',CurrentPageNumber+1);
+    //        }
+    //        if(CurrentPageNumber>1){
+    //            jQuery('#PreviousPage').data('value',CurrentPageNumber);
+    //            jQuery('#NextPage').data('value',CurrentPageNumber+1);
+    //        }
+    //        if(jQuery("#txtHiddenSearchState").val()=="YES"){
+    //            jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:jQuery("#txtHiddenSearchState").val(),District:jQuery("#txtHiddenSearchDistrict").val(),Mandal:jQuery("#txtHiddenSearchMandal").val(),CategoryId:jQuery("#txtHiddenSearchCategory").val(),Keyword:jQuery("#txtHiddenSearchKeyword").val(),PageNumber:CurrentPageNumber});
+    //        }
+    //        else{
+    //            jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:parseInt(jQuery("#txtHiddenCategoryId").val()),PageNumber:CurrentPageNumber});
+    //        }
+    //    });
+    //    jQuery("a#PageNext").click(function(){
+    //        var CurrentPageNumber=jQuery("#PageNext").data("value");
+    //        jQuery('#PreviousPage').data('value',CurrentPageNumber);
+    //        jQuery('#NextPage').data('value',CurrentPageNumber+1);
+
+    //        if(jQuery("#txtHiddenSearchState").val()=="YES"){
+    //            jQuery("#divAdSearch").load("/AddPost/_AdSearch", {State:jQuery("#txtHiddenSearchState").val(),District:jQuery("#txtHiddenSearchDistrict").val(),Mandal:jQuery("#txtHiddenSearchMandal").val(),CategoryId:jQuery("#txtHiddenSearchCategory").val(),Keyword:jQuery("#txtHiddenSearchKeyword").val(),PageNumber:CurrentPageNumber});
+    //        }
+    //        else{
+    //            jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:parseInt(jQuery("#txtHiddenCategoryId").val()),PageNumber:CurrentPageNumber});
+    //        }
+    //    });
+    //});
+    </script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+
+<style>
+
+
+</style>
+
+@*@using (Html.BeginForm("GetfilteredAds", "AddPost", FormMethod.Post, new { id = "AdFilterForm" }))
+    {*@
+<div style="padding:10px 0px 10px 0px;background-color:#e0eaf1;border-radius:5px;font-family:Verdana,sans-serif">
+    <table id="tblFilter" style="padding-left:20px;">
+        <tr>
+            <td><span class="FilterLabels">Select State</span><br />@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select State---", new { @class = "DropdownList", required = "required" })</td>
+            <td>
+                <span class="FilterLabels">Select Distrinct</span><br /><select id="ddlDistrict" class="DropdownList" required>
+                    <option value="">---Select District---</option>
+                </select>
+            </td>
+            <td>
+                <span class="FilterLabels">Select Mandal/Taluka</span><br />
+                <select id="ddlMandal" class="DropdownList" required>
+                    <option value="">---Select Mandal---</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="FilterLabels">Select Category</span><br />@Html.DropDownList("ddlCategory", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.CategoryEnums)).Cast<RaiteRaju.ApplicationUtility.CategoryEnums>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select Category---", new { @class = "DropdownList", required = "required" })
+            </td>
+            <td><span class="FilterLabels">Enter any keyword for search</span><br />@Html.TextBox("txtSearchWord", null, new { @class = "form-control" }) </td>
+            <td style="padding-left:50px;"><br /><input id="btnSearch" type="button" value="Search" onclick="fnAdSearch()" /></td>
+        </tr>
+    </table>
+</div>
+@*<div id="divSearch">
+
+        @Html.TextBox("txtSearchArea", null, new { @class = "form-control",  @placeholder =" Location" }) @Html.TextBox("txtSearchCategory", null, new { @class = "form-control" })
+
+    <input id="btnSearch" type="button" value="Search" onclick=""/>
+     </div>*@
+<div id="divHomeList">
+
+    <table id="ListingTable">
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="1"><img class="listingImage" src="~/Content/images/Cotton.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="3"><img class="listingImage" src="~/Content/images/redCHILLI.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="2"><img class="listingImage" src="~/Content/images/Rice.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="8"><img class="listingImage" src="~/Content/images/sugarcane.jpg" /></a></td>
+        </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="1">Cotton</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="3">Chillies</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="2">Rice</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="8">Sugar Cane</a></td>
+        </tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="14"><img class="listingImage" src="~/Content/images/land.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="10"><img class="listingImage" src="~/Content/images/GOATS.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="12"><img class="listingImage" src="~/Content/images/cows.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="9"><img class="listingImage" src="~/Content/images/sunflowers.jpg" /></a></td>
+        </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="14">Land</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="10">Goats</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="12">Cow</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="9">Sun Flower</a></td>
+        </tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="6"><img class="listingImage" src="~/Content/images/castor.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="5"><img class="listingImage" src="~/Content/images/Redgram.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="7"><img class="listingImage" src="~/Content/images/maize.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="4"><img class="listingImage" src="~/Content/images/GroundNut.jpeg" /></a></td>
+        </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="6">Castor</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="5">Red Gram</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="7">Maize</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="4">Ground Nuts</a></td>
+        </tr>
+        <tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="11"><img class="listingImage" src="~/Content/images/Sheep.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="13"><img class="listingImage" src="~/Content/images/buffelo.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="15"><img class="listingImage" src="~/Content/images/Vegetables.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="16"><img class="listingImage" src="~/Content/images/Equipment.jpg" /></a></td>
+        </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="11">Sheep</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="13">Buffaloes</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="15">Vegetables</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="16">Other Equipment</a></td>
+        </tr>
+        <tr></tr>
+
+    </table>
+</div>@*}*@
+
+<div id="divAdSearch">
+
+</div>
+@*<div id="_AdSearchPaging">
+    <div>
+        <input type="text" id="txtcurrentPageNumber" /><span id="spanSlash">/</span><label id="lblTotalPageNumber"></label> 
+    </div>
+   
+</div>*@
+<div>
+    @*@Html.Action("_TotalPageNumber", "AddPost")*@
+
+</div>
+@*<div id="divPaging">
+    <table style="width:100%;">
+        <tr>
+            <td style="text-align:right;color:blue"><a id="PreviousPage" data-value="1" style="cursor:pointer">
+    <span> << Previous Page </span>
+</a>
+   </td>
+            <td style="text-align:right;color:blue"><a id="PageNext" data-value="2" style="cursor:pointer">
+    <span>Page Next >> </span>
+</a>
+   </td>
+        </tr>
+    </table>
+</div>*@
+
+<div id="divHiddenForSearch" style="display:none">
+    @Html.TextBox("txtHiddenSearchState", null, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchDistrict", null, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchMandal", null, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchCategory", null, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenSearchKeyword", null, new { @class = "form-control" })
+    @Html.TextBox("txtHiddenCategoryId", null, new { @class = "form-control" })
+    @Html.TextBox("txtClickedOnSearch", null, new { @class = "form-control" })
+
+
+</div>
+
+
+@*<div id="divHomePageBanner" >
+        <img id="HomePageFootBanner" src="~/Content/images/HomePageFootBanner.jpg" />
+    </div>*@
+

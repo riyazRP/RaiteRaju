@@ -1,0 +1,10 @@
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.ApplicationUtility\bin\Release\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.ApplicationUtility\bin\Release\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\Back up of files\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.ApplicationUtility\bin\Release\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.ApplicationUtility\bin\Release\RaiteRaju.ApplicationUtility.pdb
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.dll
+C:\Users\USER\Desktop\New folder\RaiteRaju.Web\RaiteRaju.ApplicationUtility\obj\Release\RaiteRaju.ApplicationUtility.pdb

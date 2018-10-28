@@ -1,0 +1,170 @@
+﻿<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.loading-indicator.min.js"></script>
+<link type="text/css" rel="stylesheet" href="~/Content/css/jquery.loading-indicator.css" />
+<script type="text/javascript">
+
+    $.noConflict();
+    var AdList = null;
+    jQuery(document).ready(function () {
+        
+        AdList=@(Html.Raw(Json.Encode(ViewBag.AdList)));
+        var length=Object.keys(AdList).length;
+
+        if(length==0)
+        {
+            jQuery('#tblAdList').html('<tr><td style="padding-top:120px;padding-left:220px;font-size:16px"">Now You Can Post Free Ads.</tr><td></td></td>');
+        }
+        else
+        {
+            var tblAdList=jQuery('#tblAdList');
+            for(i=0;i<length;i++){
+                j=i+1;
+                tblAdList.append('<tr id="AdListRow"><td>'+j+'</td><td onclick="fnUpdateAd('+AdList[i].AdID+')" style="cursor:pointer;color:blue;">'+ AdList[i].txtAddTitle+'</td><td>'+AdList[i].Category+'</td><td>'+"₹"+AdList[i].txtPrice+" /"+AdList[i].SellingUnit.slice(0, -1) +'</td><td>'+AdList[i].txtQuantity+" "+AdList[i].SellingUnit+'</td><td onclick="fnUpdateAd('+AdList[i].AdID+')" style="curser:pointer;color:blue;cursor:pointer">'+"Edit"+'</td><td onclick="fnDeleteAd('+AdList[i].AdID+')" style="curser:pointer;color:blue;cursor:pointer">'+"Delete"+'</td><td><img src="/PhotoManagement/'+AdList[i].AdID+'.jpg" class="DisplayUserImageclass"/> </td><tr>')
+            }
+        }
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber==1){
+            jQuery('a#PreviousPage').attr('disabled', true);
+            jQuery('a#PreviousPage').css("cursor","default");
+        }
+        if(TotalPageCount==CurrentPageNumber){
+            jQuery('a#PageNext').attr('disabled', true);
+            jQuery('a#PageNext').css("cursor","default");
+        }
+        if(TotalPageCount==0){
+            jQuery("#divPaging").hide();
+        }
+    });
+
+    function fnUpdateAd(ADID){
+        var AdId=ADID;
+        jQuery('body').loadingIndicator();
+        window.location.href='@Url.Action("AdDetails","AddPost")?AdId='+AdId;
+    }
+
+    function fnDeleteAd(adid){
+        
+        var adId=adid;
+        var r = confirm("Are You Sure, Do You Want To Delete Your Ad Permanetly!");
+        if (r == true) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("AdDelete","AddPost")?AdId='+adId,
+                dataType: 'json',
+                success: function (data) {
+                    if (data != null) {
+                        window.location.reload();
+                    }
+                },
+                error: function (data) {
+                    alert("Some Error Occured");
+                }
+            });
+        }
+    }
+
+    function fnGoToPage(){
+        
+        var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+        var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+        if(CurrentPageNumber>TotalPageCount || CurrentPageNumber==0)
+        {
+            alert("Maximum Available Pages Are "+TotalPageCount+".");
+        }
+        else
+        {
+            jQuery("#divUserAds").load("/User/_AddList", {PageNumber:CurrentPageNumber});
+        }
+    }
+
+
+    jQuery(document).ready(function() {
+        jQuery("a#PreviousPage").click(function(){
+            
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1)
+            {
+                jQuery('a#PreviousPage').off("click");
+                //jQuery('a#PreviousPage').css("color","grey");
+            }
+            else
+            {
+                jQuery("#divUserAds").load("/User/_AddList", {PageNumber:CurrentPageNumber-1});
+            }
+            if(TotalPageCount==CurrentPageNumber)
+            {
+                jQuery('a#PageNext').off("click");
+                // jQuery('a#PreviousPage').css("color","grey");
+            }
+
+
+        });
+        jQuery("a#PageNext").click(function(){
+            
+            var CurrentPageNumber=parseInt(jQuery("#txtcurrentPageNumber").val());
+            var TotalPageCount=parseInt('@ViewBag.TotalPageNumber');
+            if(CurrentPageNumber==1)
+            {
+                jQuery('a#PreviousPage').off("click");
+                // jQuery('a#PreviousPage').css("color","grey");
+            }
+            if(TotalPageCount==CurrentPageNumber)
+            {
+                jQuery('a#PageNext').off("click");
+                //jQuery('a#PreviousPage').css("color","grey");
+            }
+            else
+            {
+                jQuery("#divUserAds").load("/User/_AddList", {PageNumber:CurrentPageNumber+1});
+            }
+        });
+    });
+
+</script>
+<div id="AdList">
+
+    <table id="tblAdList" style="border-collapse: collapse;">
+        <tr style="background-color:#808080;height:40px;border-collapse:collapse;color:white;font-weight:bold;font-size:13px">
+            <th width="100px">S.No</th>
+            <th width="200px">Title</th>
+            <th width="300px">Category</th>
+            <th width="300px">Price</th>
+            <th width="300px">Quantity</th>
+            <th width="100px"></th>
+            <th width="100px"></th>
+            <th width="200px"></th>
+        </tr>
+    </table>
+</div>
+
+<div id="divPaging" style="padding-top:20px;margin-left:10%">
+    <table style="width:100%;">
+        <tr>
+            <td style="text-align:left;color:blue">
+                <a id="PreviousPage" data-value="1" style="cursor:pointer">
+                    <span> < Previous Page </span>
+                </a>
+            </td>
+            <td style="padding:0px 20px 0px 10px">
+                <input id="btnGoToPage" type="button" title="click here to go to selected page" value="Go To Page" onclick="fnGoToPage()" />&nbsp; @Html.TextBox("txtcurrentPageNumber", (int)ViewBag.CurrentPageNumber, new { @class = "form-control" })
+            </td>
+            <td style="padding:0px 40px 0px 20px">
+                <label id="lblTotalPageNumber">showing page @ViewBag.CurrentPageNumber of @ViewBag.TotalPageNumber</label>
+            </td>
+            
+            <td style="text-align:right;color:blue">
+                <a id="PageNext" data-value="2" style="cursor:pointer">
+                    <span> NextPage > </span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>

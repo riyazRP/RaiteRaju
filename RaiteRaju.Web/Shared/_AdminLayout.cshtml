@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/Style.css" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Raite Raju</title>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+    $.noConflict();
+    function fnLogout() {
+        window.location.href = '/User/UserLogout';
+    }
+    jQuery(document).ready(function () {
+        jQuery("#tabVerifyAds").click(function () {
+            window.location.href = "/admin/VerifyAds?PageNumber=1";
+        });
+        jQuery("#tabUserManagement").click(function () {
+            window.location.href = "/admin/UserDetailsManagement?PageNumber=1";
+        });
+        jQuery("#tabVerifyUsers").click(function () {
+            window.location.href = "/admin/VerifyUsers?PageNumber=1";
+        });
+        jQuery("#tabAdManagement").click(function () {
+            window.location.href = "/admin/AdManagement?PageNumber=1";
+        });
+        jQuery("#tabAdViewStatistics").click(function () {
+            window.location.href = "/admin/AdViewStatistics?PageNumber=1";
+        });
+        jQuery("#tabUserRegistration").click(function () {
+            window.location.href = "/admin/UserRegistration";
+        });
+        jQuery("#tabReviewsForAdmin").click(function () {
+            window.location.href = "/Admin/ReviewsForAdmin";
+        });
+        jQuery("#tabContactUsForAdmin").click(function () {
+            window.location.href = "/Admin/ContactUs";
+        });
+        jQuery("#tabExceptions").click(function () {
+            window.location.href = "/Admin/Exceptions";
+        });
+
+    });
+    </script>
+   
+</head>
+
+
+<body id="divlayout" @*style="background-color:#f4f7f9"*@>
+    <div id="stick_header">
+        <div id="M_1"><a href="/Admin/AdminMain"><img id="logo" src="~/Content/images/logo.jpg" /></a></div>
+        <div id="M_2"><span id="Title">Raite Raju</span><br /><span id="TagLine">Now selling is at farmer's finger tips</span></div>
+        <div id="M_3">
+            <img id="imgLoginIcon" src="~/Content/images/LoginIcon.png" />
+            @* @if (string.IsNullOrEmpty((string)Session["LOGGEDONUSER"]))*@
+            @if (Request.Cookies["_RRAUN"] == null)
+            { <div id="divAccount">
+                <span> <a id="aLogin" href="/User/Login">My Account</a></span>
+            </div>
+            }
+            @*@if (!string.IsNullOrEmpty((string)Session["LOGGEDONUSER"]))*@
+            @if (Request.Cookies["_RRAUN"] != null)
+            {
+                <div class="dropdownMenu">
+                    <a class="dropbtn" href="/User/UserAccount">
+                        @*@Session["LOGGEDONUSER"].ToString()*@
+                        @Request.Cookies["_RRAUN"]["_RRAUN"]
+                    </a>
+
+                    <div class="dropdown-content">
+                        <a href="#" onclick="fnLogout()">Logout</a>
+                    </div>
+                </div>  <span class="arrow-down" style="vertical-align:auto;"></span>}
+
+        </div>
+        <div id="M_4">@*<a id="btnSubmitYourAd" href="">Submit Your Ad</a>*@<input id="btnSubmitYourAd" type="button" value="Admin MainPage" onclick="window.location.href = '/Admin/AdminMain'"></div>
+    </div>
+    
+    <div id="LaytoutTabbar">
+        <div id="topbar-wrapper" class="wrapper">
+
+            <div id="topbar-row" class="row">
+
+                <ul class="tabs1">
+
+                    <li id="tabVerifyAds">
+                        <a href="/admin/VerifyAds?PageNumber=1" tabindex="-1">VerifyAds</a>
+                    </li>
+                    <li id="tabUserManagement">
+                        <a href="/admin/UserDetailsManagement?PageNumber=1" tabindex="-1">User Mngt</a>
+                    </li>
+                    <li id="tabVerifyUsers">
+                        <a href="/admin/VerifyUsers?PageNumber=1" tabindex="-1">Verify Users</a>
+                    </li>
+                    <li id="tabAdManagement">
+                        <a href="/admin/AdManagement?PageNumber=1" tabindex="-1">Ad Mngt</a>
+                    </li>
+                    <li id="tabAdViewStatistics">
+                        <a href="/admin/AdViewStatistics?PageNumber=1" tabindex="-1">Ad Views</a>
+                    </li>
+                    <li id="tabUserRegistration">
+                        <a href="/admin/UserRegistration" tabindex="-1">User Reg</a>
+                    </li>
+                    <li id="tabReviewsForAdmin">
+                        <a href="/Admin/ReviewsForAdmin" tabindex="-1">Reviews</a>
+                    </li>
+                    <li id="tabContactUsForAdmin">
+                        <a href="/Admin/ContactUs" tabindex="-1">Contact Us</a>
+                    </li>
+                    <li id="tabExceptions">
+                        <a href="/Admin/Exceptions" tabindex="-1">Exceptions</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div><div id="body">
+
+        @RenderBody()
+
+    </div>
+
+    <div id="divfooter">
+        <div id="divfooter_1"><img id="logo" src="~/Content/images/logo.jpg" /></div>
+        <div id="divfooter_2">
+            <table id="footerTable">
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/AboutUs">About Us</a></td>
+                    <td><a class="FooterLinks" href="/Footer/TermsAndConditions">Terms & Conditions</a></td>
+                    <td><a class="FooterLinks" href="/Footer/ContactUs">Contact Us</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/Careers">Careers</a></td>
+                    <td><a class="FooterLinks" href="/Footer/ReportIssue">Report an Issue</a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="/Footer/Reviews">Reviews</a></td>
+                    <td></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" @*href="/Footer/FeaturedAds"*@>@*Feature Ads*@</a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td><a class="FooterLinks" href="#"></a></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div id="divfooter_3"><table><tr><td><a href="https://www.facebook.com/RaiteRaju-268146037354551/?modal=admin_todo_tour"><img class="social_MediaIcons" src="~/Content/images/FooterIcon1.jpg" /></a></td><td><a href="https://www.instagram.com/raiteraju/"><img class="social_MediaIcons" src="~/Content/images/FooterIcon2.jpg" /></a></td><td><a href="https://twitter.com/RaiteRaju"><img class="social_MediaIcons" src="~/Content/images/FooterIcon3.jpg" /></a></td><td><a href="https://plus.google.com/u/0/104022384172539536216"><img class="social_MediaIcons" src="~/Content/images/FooterIcon4.jpg" /></a></td></tr></table></div>
+    </div>
+</body>
+</html>

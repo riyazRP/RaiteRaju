@@ -1,0 +1,587 @@
+﻿@model RaiteRaju.Web.Models.UserDetailsModel
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.loading-indicator.min.js"></script>
+<link type="text/css" rel="stylesheet" href="~/Content/css/jquery.loading-indicator.css" />
+<script type="text/javascript">
+
+    jQuery.noConflict();
+    @*@var AdList = null;
+    jQuery(document).ready(function () {
+        fnshowAdList();
+        AdList=@(Html.Raw(Json.Encode(ViewBag.AdList)));
+        var length=Object.keys(AdList).length;
+
+        if(length==0)
+        {
+            jQuery('#tblAdList').html('No Ads are found for your account');
+        }
+        else
+        {
+            var tblAdList=jQuery('#tblAdList');
+            for(i=0;i<length;i++){
+                j=i+1;
+                tblAdList.append('<tr id="AdListRow"><td>'+j+'</td><td onclick="fnUpdateAd('+AdList[i].AdID+')" style="cursor:pointer;color:blue;">'+ AdList[i].txtAddTitle+'</td><td>'+AdList[i].Category+'</td><td>'+AdList[i].txtPrice+'</td><td>'+AdList[i].txtQuantity+" "+AdList[i].SellingUnit+'</td><td onclick="fnUpdateAd('+AdList[i].AdID+')" style="curser:pointer;color:blue;cursor:pointer">'+"Edit"+'</td><td onclick="fnDeleteAd('+AdList[i].AdID+')" style="curser:pointer;color:blue;cursor:pointer">'+"Delete"+'</td><td><img src="/RaiteRaju/PhotoManagement/'+AdList[i].AdID+'.jpg" class="DisplayUserImageclass"/> </td><tr>')
+            }
+        }
+    })*@
+
+    function fnUpdateAd(ADID){
+        var AdId=ADID;
+        window.location.href='@Url.Action("AdDetails","AddPost")?AdId='+AdId;
+    }
+
+    function fnDeleteAd(adid){
+
+        var adId=adid;
+        var r = confirm("Are You Sure, Do You Want To Delete Your Add Permanetly!");
+        if (r == true) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("AdDelete","AddPost")?AdId='+adId,
+                dataType: 'json',
+                success: function (data) {
+                    if (data !=0) {
+                        window.location.reload();
+                    }
+                    else{
+                        alert("Something Went Wrong, Please Try After Sometime.");
+                    }
+                },
+                error: function (data) {
+                    alert("Some Error Occured.");
+                }
+            });
+        }
+    }
+
+    function fnshowAdList()
+    {
+        jQuery('#MyAds').removeClass('tablinks').addClass('tablinks active');
+        jQuery('#settings').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#Payments').removeClass('tablinks active').addClass('tablinks');
+        jQuery("#divUserAds").show();
+        jQuery("#UserSettings").hide();
+        jQuery("#DivPayments").hide();
+    }
+
+    function fnshowUserSettings()
+    {
+        jQuery('#MyAds').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#settings').removeClass('tablinks').addClass('tablinks active');
+        jQuery('#Payments').removeClass('tablinks active').addClass('tablinks');
+
+        jQuery("#divUserAds").hide();
+        jQuery("#divUpdateUserDetails").show();
+        jQuery("#UserSettings").show();
+        jQuery("#DivPayments").hide();
+    }
+
+    function fnshowPayments()
+    {
+        jQuery('#MyAds').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#settings').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#Payments').removeClass('tablinks').addClass('tablinks active');
+
+
+        jQuery("#divUserAds").hide();
+        jQuery("#UserSettings").hide();
+        jQuery("#DivPayments").show();
+    }
+
+    function fnshowdivUpdateUserDetails()
+    {
+        jQuery('#TabUpdateUserDetails').removeClass('tablinks').addClass('tablinks active');
+        jQuery('#TabUserdetailsPassword').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPhoneNumber').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserAccountDeletion').removeClass('tablinks active').addClass('tablinks');
+
+        jQuery("#divUpdateUserDetails").show();
+        jQuery("#divUserdetailsPassword").hide();
+        jQuery("#divUserdetailsPhoneNumber").hide();
+        jQuery("#divUserAccountDeletion").hide();
+    }
+    function fnshowdivUserdetailsPassword()
+    {
+        jQuery('#TabUpdateUserDetails').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPassword').removeClass('tablinks').addClass('tablinks active');
+        jQuery('#TabUserdetailsPhoneNumber').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserAccountDeletion').removeClass('tablinks active').addClass('tablinks');
+
+        jQuery("#divUpdateUserDetails").hide();
+        jQuery("#divUserdetailsPassword").show();
+        jQuery("#divUserdetailsPhoneNumber").hide();
+        jQuery("#divUserAccountDeletion").hide();
+    }
+    function fnshowdivUserdetailsPhoneNumber()
+    {
+        jQuery('#TabUpdateUserDetails').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPassword').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPhoneNumber').removeClass('tablinks').addClass('tablinks active');
+        jQuery('#TabUserAccountDeletion').removeClass('tablinks active').addClass('tablinks');
+
+        jQuery("#divUpdateUserDetails").hide();
+        jQuery("#divUserdetailsPassword").hide();
+        jQuery("#divUserdetailsPhoneNumber").show();
+        jQuery("#divUserAccountDeletion").hide();
+    }
+    function fnshowdivUserAccountDeletion(){
+        jQuery('#TabUpdateUserDetails').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPassword').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserdetailsPhoneNumber').removeClass('tablinks active').addClass('tablinks');
+        jQuery('#TabUserAccountDeletion').removeClass('tablinks').addClass('tablinks active');
+
+        jQuery("#divUpdateUserDetails").hide();
+        jQuery("#divUserdetailsPassword").hide();
+        jQuery("#divUserdetailsPhoneNumber").hide();
+        jQuery("#divUserAccountDeletion").show();
+    }
+
+    function fnCancel()
+    {
+        window.location.href = '@Url.Action("Home", "Home")';
+    }
+
+    function validation()
+    {
+
+        var ddlState=jQuery("#ddlState option:selected").text();
+        var ddlDistrict=jQuery("#ddlDistrict option:selected").text();
+        var ddlMandal=jQuery("#ddlMandal option:selected").text();
+
+        var phone = jQuery("#txtPhoneNumber").val(), intRegex = /^\d{10}$/;
+        var message="";
+
+        if(ddlState== ""|| ddlDistrict == "" || ddlMandal == ""|| jQuery("#txtUserNameDetails").val()=="" || jQuery("#txtVillage").val()==""){
+            if (ddlState == "" ||ddlState== "---Select State---") {
+                //If the "Please Select" option is selected display error.
+                message="Please Select State!\n";
+            }
+            if (ddlDistrict == ""|| ddlDistrict =="---Select District---") {
+                //If the "Please Select" option is selected display error.
+                message=message+"Please Select District!\n";
+            }
+            if (ddlMandal== ""||ddlMandal== "---Select Mandal---") {
+                //If the "Please Select" option is selected display error.
+                message=message+"Please Select Mandal!\n";
+            }
+            if(jQuery("#txtUserNameDetails").val()==""){
+                message=message+"Please Enter Name!\n";
+            }
+            //if(jQuery("#txtPhoneNumber").val()=="")
+            //{
+            //    message=message+"Please Enter PhoneNumber!\n";
+            //}
+            if(jQuery("#txtVillage").val()==""){
+                message=message+"Please Enter txtVillage!\n";
+            }
+            //if(jQuery("#txtPassword").val()==""){
+            //    message=message+"Please enter password!\n";
+            //}
+
+        }
+        else if(ddlState != ""&& ddlDistrict!= ""  && ddlMandal != "" && jQuery("#txtUserNameDetails").val() != "" && jQuery("#txtVillage").val() != "")
+        {
+
+            if(/^[^<>'\"/`%-]*$/.test(jQuery("#txtUserNameDetails").val()) == false)
+            {
+                message=message+"Special Characters Are Not Allowed In Name [max length:50]!\n";
+            }
+            //if (intRegex.test(phone)==false) {
+            //    message = message + "Please enter a valid phone number!\n";
+            //}
+            if(/^[^<>'\"/`%-]*$/.test(jQuery("#txtVillage").val())==false){
+                message=message+"Special Characters Are Not Allowed In Village [max length:50]!\n";
+            }
+            //if (/^[a-zA-Z0-9 .]{1,50}jQuery/.test(jQuery("#txtPassword").val()) == false) {
+            //    message = message + "special characters are not allowed in password [max length:50]!\n ";
+            //}
+
+        }
+
+        if(message==""){
+            return true;
+        }
+        else{
+            alert(message);
+            return false
+        }
+    }
+    function ValidatePhoneNumber()
+    {
+        var phone = jQuery("#txtPhoneNumber").val(), intRegex = /^[5-9]{1}[0-9]{9}$/;
+        var message="";
+
+        if(phone=="")
+        {
+            message=message+"Please Enter PhoneNumber!\n";
+        }
+        else if(phone!= "") {
+            if(intRegex.test(phone)==false) {
+                message = message + "Please Enter A Valid Phone Number!\n";
+            }
+        }
+
+        if(message==""){
+            return true;
+        }
+        else{
+            alert(message);
+            return false
+        }
+    }
+
+    function ValidatePassword()
+    {
+        var message="";
+
+        if(jQuery("#txtPassword").val()==""){
+            message=message+"Please Enter Password!\n";
+        }
+        else if(jQuery("#txtPassword").val()!="")
+        {
+            if (/^[^<>'\"/`%-]*$/.test(jQuery("#txtPassword").val()) == false) {
+                message = message + "Special Characters Are Not Allowed In Password [Max length:50]!\n ";
+            }
+        }
+
+        if(message==""){
+            return true;
+        }
+        else{
+            alert(message);
+            return false
+        }
+    }
+
+
+    function fnUpdateUserDetails()
+    {
+        var form = jQuery("#UserRegistration").serialize();
+        var state=jQuery("#ddlState option:selected").text();
+        var district=jQuery("#ddlDistrict option:selected").text();
+        var mandal=jQuery("#ddlMandal option:selected").text();
+        form+="&ddlStateText="+state+"&ddlDistrict="+district+"&ddlMandal="+mandal;
+        var AmobileNumber=jQuery("#txtPhoneNumber").val();
+
+        if(  validation()){
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateUserDetails", "User")',
+                dataType: 'json',
+                data: form,
+                success: function (data) {
+                    if(data!=0 && data!=-99){
+                        alert("Details Updated Successfully");
+                        window.location.reload();
+                    }
+                    if(data==-99){
+                        alert("Please Enter Correct Data As Per Validation.");
+                    }
+
+                },
+                error: function (data) {
+                    alert("Some Error Occured");
+                    jQuery("#diverror").show();
+                }
+            });
+        }
+    }
+    jQuery(function () {
+        jQuery("#ddlState").change(function () {
+
+            var stagId= jQuery("#ddlState").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            DistrictList=@(Html.Raw(Json.Encode(ViewBag.DistrictLIst)));
+            var length=Object.keys(DistrictList).length;
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+            for(i=0;i<length;i++){
+                if(DistrictList[i].ID==stagId){
+                    jQuery("#ddlDistrict").append(jQuery('<option></option>').val(DistrictList[i].value).html(DistrictList[i].Name))}
+
+            }})});
+    jQuery(function () {
+        jQuery("#ddlDistrict").change(function () {
+
+            var DistID= jQuery("#ddlDistrict").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            MandalList=@(Html.Raw(Json.Encode(ViewBag.MandalList)));
+            var length=Object.keys(MandalList).length;
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+            for(i=0;i<length;i++){
+                if(MandalList[i].ID==DistID){
+                    jQuery("#ddlMandal").append(jQuery('<option></option>').val(MandalList[i].value).html(MandalList[i].Name))}
+
+            }})});
+
+
+    function fnUpdatePassword(){
+
+        var form= jQuery("#UpdatePassword").serialize();
+
+        if(ValidatePassword()){
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdatePassword", "User")',
+                dataType: 'json',
+                data: form,
+                success: function (data) {
+
+                    if(data!=0 && data!=-99){
+                        alert("Password Updated successfully.");
+                    }
+                    if(data==-99){
+                        alert("Please Enter Correct Password As Per Validation.");
+                    }
+
+                },
+                error: function (data) {
+                    alert("Some Error Occured");
+                    jQuery("#diverror").show();
+                }
+            });
+        }
+    }
+    function fnUpdatePhoneNumber(){
+
+        var form= jQuery("#UpdatePhoneNumber").serialize();
+        var AmobileNumber=jQuery("#txtPhoneNumber").val();
+        if(  ValidatePhoneNumber()){
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdatePhoneNumber", "User")',
+                dataType: 'json',
+                data: form,
+                success: function (data) {
+                    debugger;
+                    if(data==0)
+                    {
+                        alert("Entered Mobile Number Is Already Registered.");
+                    }
+                    if(data!=0 && data!=-99){
+                        window.location.href = '@Url.Action("Verification", "User")?MobileNumber=' + AmobileNumber;
+                    }
+                    if(data==-99){
+                        alert("Please Enter Correct PhoneNumber As Per Validation.");
+                    }
+
+                },
+                error: function (data) {
+                    alert("Some Error Occured");
+                    jQuery("#diverror").show();
+                }
+            });
+        }
+    }
+
+    jQuery(document).ready(function(){
+        fnshowAdList();
+        jQuery("#divUserAds").load("/User/_AddList", {PageNumber:1});
+    });
+
+    function fnDeleteAccount(){
+        var BigIntPhoneNumber=@ViewBag.txtPhoneNumber;
+        var r = confirm("Are You Sure, Do You Want To Delete Your Account Permanetly!");
+        if (r == true) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteAccount", "User")?BigIntPhoneNumber='+BigIntPhoneNumber,
+                dataType: 'json',
+                success: function (data) {
+                    if (data != null) {
+                        window.location.href = '/User/UserLogout';
+                    }
+                },
+                error: function (data) {
+                    alert("Some Error Occured");
+                }
+            });
+        }
+
+    }
+
+</script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+<div id="divUserAccount" style="font-family:Verdana,sans-serif;">
+    <div class="tab">
+        <button class="tablinks" id="MyAds" onclick="fnshowAdList()">My Ads</button>
+        <button class="tablinks" id="settings" onclick="fnshowUserSettings()">Settings</button>
+        @*<button class="tablinks" id="Payments" onclick="fnshowPayments()">Payments</button>*@
+    </div>
+
+    <div id="divUserAds">
+        
+    </div>
+  
+    <div id="UserSettings" style="border:1px solid #eae2e2;">
+        <div class="tab subTab">
+            <button class="tablinks" id="TabUpdateUserDetails" onclick="fnshowdivUpdateUserDetails()">Update Your Details</button>
+            <button class="tablinks" id="TabUserdetailsPhoneNumber" onclick="fnshowdivUserdetailsPhoneNumber()">Update PhoneNumber</button>
+            <button class="tablinks" id="TabUserdetailsPassword" onclick="fnshowdivUserdetailsPassword()">Update Password</button>
+            <button class="tablinks" id="TabUserAccountDeletion" onclick="fnshowdivUserAccountDeletion()">Delete My Account</button>
+
+        </div>
+        
+
+        <div id="divUpdateUserDetails" style="display:none;padding-left:150px;padding-top:20px">
+            @using (Html.BeginForm("UpdateUserDetails", "User", FormMethod.Post, new { id = "UserRegistration" }))
+            { 
+                <div class="Registration">
+
+                    <table>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Name<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.TextBox("txtUserNameDetails", (string)ViewBag.txtUserName, new { @class = "form-control", @placeholder = " Enter Your Name [max Lenth:50char]" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtUserName, "", new { @class = "error" })</td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>State<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), (string)@ViewBag.ddlState, new { @class = "DropdownList", required = "required" })</td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>District<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">
+                                <select id="ddlDistrict" class="DropdownList" required>
+                                    <option value="">@ViewBag.ddlDistrict</option>
+                                </select> @*@Html.DropDownList("ddlDistrict", new SelectList(Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList))), "Select Category", new { @class = "DropdownList" })*@
+                            </td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Mandal<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">
+                                <select id="ddlMandal" class="DropdownList" required>
+                                    <option value="">@ViewBag.ddlMandal</option>
+                                </select>@*@Html.DropDownList("ddlMandal", new SelectList(Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList))), "Select Category", new { @class = "DropdownList" })*@
+                            </td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Village<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.TextBox("txtVillage", (string)ViewBag.txtVillage, new { @class = "form-control", @placeholder = " Enter Villag Name [max Lenth:50char]" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtVillage, "", new { @class = "error" })</td>
+                        </tr>
+                        @*<tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>MailID:</label></td>
+                            <td id="tdright">@Html.TextBox("txtMailId", (string)ViewBag.txtMailId, new { @class = "form-control", @placeholder = " Enter EmailId [max Lenth:50char]" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtMailId, "", new { @class = "error" })</td>
+                        </tr>*@
+                    </table>
+                </div>
+                <div>
+                    <table class="tablebutton">
+                        <tr>
+
+                            <td id="tdLeft"><input id="btnUpdateUserDetails" type="button" value="Update" class="clsbutton" onclick="fnUpdateUserDetails()" /></td>
+                            <td id="tdright"><input id="btnCancelUpadate" type="button" value="Cancel" class="clsbutton" onclick="fnshowAdList()" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="diverror">
+                    <label>@ViewBag.ErrorMessage</label>
+                </div>
+            }
+        </div>
+
+        <div id="divUserdetailsPhoneNumber" style="display:none;padding-left:150px;padding-top:20px">
+            @using (Html.BeginForm("UpdateUserDetails", "User", FormMethod.Post, new { id = "UpdatePhoneNumber" }))
+            {
+                <div class="Registration">
+
+                    <table>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Name<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.TextBox("txtUserNamePhoneNumber", (string)ViewBag.txtUserName, new { @class = "form-control", @placeholder = " Enter Your Name [max Lenth:50char]", @readonly = "readonly" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtUserName, "", new { @class = "error" })</td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Phone Number<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.TextBox("txtPhoneNumber", (Int64)ViewBag.txtPhoneNumber, new { @class = "form-control", @placeholder = " Enter Your 10 digit PhoneNumber" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtPhoneNumber, "", new { @class = "error" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="tablebutton">
+                        <tr>
+
+                            <td id="tdLeft"><input id="btnUpdatePhoneNumber" type="button" value="Update" class="clsbutton" onclick="fnUpdatePhoneNumber()" /></td>
+                            <td id="tdright"><input id="btnCancelUpdate" type="button" value="Cancel" class="clsbutton" onclick="fnshowAdList()" /></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div id="divUserdetailsPassword" style="display:none;padding-left:150px;padding-top:20px">
+            @using (Html.BeginForm("UpdateUserDetails", "User", FormMethod.Post, new { id = "UpdatePassword" }))
+            {
+                <div class="Registration">
+
+                    <table>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Name<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.TextBox("txtUserNamePassword", (string)ViewBag.txtUserName, new { @class = "form-control", @placeholder = " Enter Your Name [max Lenth:50char]", @readonly = "readonly" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtUserName, "", new { @class = "error" })</td>
+                        </tr>
+                        <tr class="tableRowRegistration">
+                            <td id="tdLeft"><label>Password<span class="MandatoryStars">*</span>:</label></td>
+                            <td id="tdright">@Html.Password("txtPassword", null, new { @class = "password", @placeholder = " Password [max Lenth:50char]" })</td>
+                            <td>@Html.ValidationMessageFor(m => m.txtPassword, "", new { @class = "error" })</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="tablebutton">
+                        <tr>
+
+                            <td id="tdLeft"><input id="btnUpatePassword" type="button" value="Update" class="clsbutton" onclick="fnUpdatePassword()" /></td>
+                            <td id="tdright"><input id="btnCancelUpdatePassword" type="button" value="Cancel" class="clsbutton" onclick="fnshowAdList()" /></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div id="divUserAccountDeletion"  style="display:none;padding-left:150px;padding-top:20px">
+            
+            <table style="width:100%">
+                <tr>
+                    <td></td><td></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><label id="lblDeleteAccount">If you want to delete your account please click below delete button. <br />
+                        If you are facing any issues please <a href="/Footer/ContactUs" style="text-decoration:none;color:orange">contact us</a></label></td>
+                </tr>
+            </table>
+            <table class="tablebutton">
+                <tr>
+
+                    <td id="tdLeft"><input id="btnDelete" type="button" value="Delete" class="clsbutton" onclick="fnDeleteAccount()" /></td>
+                    <td id="tdright"><input id="btnDeleteCancel" type="button" value="Cancel" class="clsbutton" onclick="fnshowAdList()" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="DivPayments">
+
+    </div>
+
+</div>

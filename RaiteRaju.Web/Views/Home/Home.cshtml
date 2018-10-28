@@ -1,0 +1,219 @@
+﻿@using RaiteRaju.ApplicationUtility;
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+<title> Raiteraju Home</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="Sell your crop at Raiteraju.in,raiteraju,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="Sell your crop at Raiteraju.in,raiteraju,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+    $.noConflict();
+    jQuery(document).ready(function(){
+        jQuery("#divPaging").hide();
+    })
+
+
+    function fnAdSearchByCategory(Category){
+        var CurrentPageNumber=jQuery('#PreviousPage').val();
+        jQuery('#PreviousPage').data('value',1);
+        jQuery('#NextPage').data('value',2);
+        jQuery("#divAdSearch").load("AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+    }
+
+    //jQuery(document).ready(function () {
+    //    jQuery("a.homeLink").click(function(){
+    //        jQuery("#divHomeList").hide();
+    //        jQuery("#divPaging").show();
+    //        Category=jQuery(this).data("value");
+    //        jQuery('#txtHiddenCategoryId').val(Category);
+    //        jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+    //    });
+    //    jQuery("a.AlistingCell").click(function(){
+    //        jQuery("#divHomeList").hide();
+    //        Category=jQuery(this).data("value");
+    //        jQuery('#txtHiddenCategoryId').val(Category);
+    //        jQuery("#divAdSearch").load("/AddPost/_AdSearchCategory", {Category:Category,PageNumber:1});
+
+    //    });
+    //});
+
+    jQuery(window).ready(function () {
+        jQuery("a.homeLink").click(function () {
+            CategoryId = jQuery(this).data("value");
+            window.location.href = '@Url.Action("AdSearch", "AddPost")?CategoryId=' + CategoryId + '&PageNumber=' + 1;
+
+        });
+    });
+
+
+
+
+    </script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+
+<style>
+
+
+</style>
+
+@*@using (Html.BeginForm("GetfilteredAds", "AddPost", FormMethod.Post, new { id = "AdFilterForm" }))
+    {*@
+@*<div>
+    <div id="topbar-wrapper" class="wrapper">
+
+        <div id="topbar-row" class="row">
+
+            <ul class="tabs1">
+
+                <li id="">
+                    <a href="/" tabindex="-1">Home</a>
+                </li>
+
+                <li id="">
+                    <a href="/Footer/AboutUs" tabindex="-1">About Us</a>
+                </li>
+
+                <li id="">
+                    <a href="#" tabindex="-1">How it Works</a>
+                </li>
+                <li id="">
+                    <a href="#" tabindex="-1">How To Register</a>
+                </li>
+
+                <li id="">
+                    <a  href="#" tabindex="-1">How to Post Ad</a>
+                </li>
+
+                
+
+                <li id="">
+                    <a href="/Footer/ReportIssue" tabindex="-1">Report An Issue</a>
+                </li>
+
+                <li id="">
+                    <a href="/Footer/ContactUs" tabindex="-1">Contact Us</a>
+                </li>
+               
+            </ul>
+
+        </div>
+
+    </div>*@
+    @*<table id="tblFilter" style="padding-left:20px;">
+            <tr>
+                <td><span class="FilterLabels">Select State</span><br />@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select State---", new { @class = "DropdownList", required = "required" })</td>
+                <td>
+                    <span class="FilterLabels">Select District</span><br /><select id="ddlDistrict" class="DropdownList" required>
+                        <option value="">---Select District---</option>
+                    </select>
+                </td>
+                <td>
+                    <span class="FilterLabels">Select Mandal/Taluka</span><br />
+                    <select id="ddlMandal" class="DropdownList" required>
+                        <option value="">---Select Mandal---</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="FilterLabels">Select Category</span><br />@Html.DropDownList("ddlCategory", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.CategoryEnums)).Cast<RaiteRaju.ApplicationUtility.CategoryEnums>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select Category---", new { @class = "DropdownList", required = "required" })
+                </td>
+                <td><span class="FilterLabels">Enter any keyword for search</span><br />@Html.TextBox("txtSearchWord", null, new { @class = "form-control" }) </td>
+                <td style="padding-left:50px;"><br /><input id="btnSearch" type="button" value="Search" onclick="fnAdSearch()" /></td>
+            </tr>
+        </table>
+    </div>
+    *@
+<div id="divHomeList">
+    <label style="font-family:Verdana,sans-serif;font-size:12px;padding-left:25px;">Click on below Categories to view Ads posted by Farmers.</label>
+    <table id="ListingTable">
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="1"><img class="listingImage" src="~/Content/images/Cotton.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="3"><img class="listingImage" src="~/Content/images/redCHILLI.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="2"><img class="listingImage" src="~/Content/images/Rice.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="9"><img class="listingImage" src="~/Content/images/sunflowers.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="7"><img class="listingImage" src="~/Content/images/maize.jpg" /></a></td>
+
+        </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="1">Cotton</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="3">Chillies</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="2">Rice</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="9">Sun Flower</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="7">Maize</a></td>
+
+        </tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="14"><img class="listingImage" src="~/Content/images/land.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="4"><img class="listingImage" src="~/Content/images/GroundNut.jpeg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="5"><img class="listingImage" src="~/Content/images/Redgram.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="6"><img class="listingImage" src="~/Content/images/castor.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="8"><img class="listingImage" src="~/Content/images/sugarcane.jpg" /></a></td>
+
+           
+
+         </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="14">Land</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="4">Ground Nuts</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="5">Red Gram</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="6">Castor</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="8">Sugar Cane</a></td>
+
+            
+
+            <td class="listingCellName"><a class="AlistingCell" data-value=""></a></td>
+
+        </tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="10"><img class="listingImage" src="~/Content/images/GOATS.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="12"><img class="listingImage" src="~/Content/images/cows.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="11"><img class="listingImage" src="~/Content/images/Sheep.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="13"><img class="listingImage" src="~/Content/images/buffelo.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="23"><img class="listingImage" src="~/Content/images/Fruits.jpg" /></a></td>
+
+         </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="10">Goats</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="12">Cow</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="11">Sheep</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="13">Buffaloes</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="23">Fruits</a></td>
+
+
+        </tr>
+        <tr>
+        <tr>
+            <td class="listingCell"><a class="homeLink" data-value="21"><img class="listingImage" src="~/Content/images/Handloom.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="15"><img class="listingImage" src="~/Content/images/Vegetables.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="16"><img class="listingImage" src="~/Content/images/Equipment.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="19"><img class="listingImage" src="~/Content/images/Fish.jpg" /></a></td>
+            <td class="listingCell"><a class="homeLink" data-value="20"><img class="listingImage" src="~/Content/images/Prawns.jpg"/></a></td>
+
+         </tr>
+        <tr>
+            <td class="listingCellName"><a class="AlistingCell" data-value="21">Handloom</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="15">Vegetables</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="16">Equipment</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="19">Fish</a></td>
+            <td class="listingCellName"><a class="AlistingCell" data-value="20">Prawns</a></td>
+
+        </tr>
+        <tr></tr>
+
+    </table>
+</div>@*}*@
+
+<div id="divAdSearch">
+
+</div>
+
+
+
+
+
+

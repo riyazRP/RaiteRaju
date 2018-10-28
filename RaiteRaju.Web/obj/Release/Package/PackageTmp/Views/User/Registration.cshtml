@@ -1,0 +1,258 @@
+﻿@model RaiteRaju.Web.Models.UserDetailsModel
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+<title> Raiteraju</title>
+<meta name="google-site-verification" content="Raiteraju,farmer,sell,land" />
+<meta name="keywords" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="description" content="sell your crop at Raiteraju.in,raiteraju.in,farmer,sell,Buy,land,cotton,rice,sunflower,buffalo,Cow,Andhrapradesh" />
+<meta name="robots" content="index,follow" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.loading-indicator.min.js"></script>
+<link type="text/css" rel="stylesheet" href="~/Content/css/jquery.loading-indicator.css" />
+<script type="text/javascript">
+        $.noConflict();
+    jQuery("#diverror").hide();
+
+    function fnCancel() {
+        window.location.href = '@Url.Action("Login", "User")';
+    }
+
+    function validation(){
+        var ddlState = jQuery("#ddlState");
+        var ddlDistrict=jQuery("#ddlDistrict");
+        var ddlMandal=jQuery("#ddlMandal");
+        var phone = jQuery("#txtPhoneNumber").val(),
+            //intRegex = /^\d{10}$/;
+            intRegex=/^[5-9]{1}[0-9]{9}$/;
+        var message="";
+
+        if(ddlState.val() == ""|| ddlDistrict.val() == "" || ddlMandal.val() == ""|| jQuery("#txtUserName").val()=="" || jQuery("#txtPhoneNumber").val()==""||jQuery("#txtVillage").val()=="" ||jQuery("#txtPassword").val()==""){
+
+            if(jQuery("#txtUserName").val()==""){
+                message=message+"Please Enter Name.\n";
+            }
+            if(jQuery("#txtPhoneNumber").val()=="")
+            {
+                message=message+"Please Enter Phone Number.\n";
+            }
+            if(jQuery("#txtPassword").val()==""){
+                message=message+"Please Enter Password.\n";
+            }
+            if (ddlState.val() == "" ||ddlState.val() == "---Select State---") {
+                //If the "Please Select" option is selected display error.
+                message=message+"Please Select State.\n";
+            }
+            if (ddlDistrict.val() == ""|| ddlDistrict.val() =="---Select District---") {
+                //If the "Please Select" option is selected display error.
+                message=message+"Please Select District.\n";
+            }
+            if (ddlMandal.val() == ""||ddlMandal.val() == "---Select Mandal---") {
+                //If the "Please Select" option is selected display error.
+                message=message+"Please Select Mandal.\n";
+            }
+            if(jQuery("#txtVillage").val()==""){
+                message=message+"Please Enter Village.\n";
+            }
+
+        }
+        else if(ddlState.val() != ""&& ddlDistrict.val() != ""  && ddlMandal.val() != "" && jQuery("#txtUserName").val() != "" && jQuery("#txtPhoneNumber").val() != "" && jQuery("#txtVillage").val() != "" &&jQuery("#txtPassword").val()!="")
+        {
+
+            if(/^[^<>'\"/`%-]*$/.test(jQuery("#txtUserName").val()) == false)
+            {
+                message=message+"Special characters(<>'\"/`%-) Are Not Allowed In Name.\n";
+            }
+            else if(jQuery("#txtUserName").val().length>50 || jQuery("#txtPassword").val().length<8){
+                message=message+"Name Should Be Between 4 To 50 Characters.\n";
+            }
+
+            if (intRegex.test(phone)==false) {
+                message = message + "Please Enter Valid Phone Number.\n";
+            }
+
+            if(/^[^<>'\"/`%-]*$/.test(jQuery("#txtVillage").val())==false){
+
+                message=message+"Special Characters(<>'\"/`%-) Are Not Allowed In Village.\n";
+            }
+            else if(jQuery("#txtVillage").val().length>50 || jQuery("#txtVillage").val().length<4){
+                message=message+"Village Should Be Between 4 To 50 Characters.\n";
+            }
+
+            if (/^[^<>'\"/`%-]*$/.test(jQuery("#txtPassword").val()) == false) {
+                message = message + "Special Characters(<>'\"/`%-) Are Not Allowed In Password.\n";
+            }
+            else if(jQuery("#txtPassword").val().length>20 || jQuery("#txtPassword").val().length<8){
+                message=message+"Password Should Be Between 8 To 20 Characters\n";
+            }
+
+
+
+        }
+
+        if(message==""){
+            return true;
+        }
+        else{
+            //jQuery("#ErrorMessage").html(message).css("color","Red");
+            alert(message);
+            return false
+        }
+    }
+
+    function fnRegistration() {
+
+        //jQuery(this).validate();
+        //if (!jQuery("#UserRegistration").valid()) return false;
+
+        var form = jQuery("#UserRegistration").serialize();
+        var state=jQuery("#ddlState option:selected").text();
+        var district=jQuery("#ddlDistrict option:selected").text();
+        var mandal=jQuery("#ddlMandal option:selected").text();
+        form+="&ddlStateText="+state+"&ddlDistrict="+district+"&ddlMandal="+mandal;
+        var AmobileNumber=jQuery("#txtPhoneNumber").val();
+
+        if(  validation()){
+
+            jQuery.ajax({
+                type: 'POST',
+                url: '@Url.Action("Registration", "User")',
+                dataType: 'json',
+                data: form,
+                success: function (data) {
+
+                    if(data==0){
+                        alert("Entered Phone Number Is Already Registered.");
+                    }
+                    if(data==-1){
+                        alert("Please Enter Correct Data As Per Validation.");
+                    }
+                    if(data!=0 && data!=-1){
+                        jQuery('body').loadingIndicator();
+                        jQuery("#UserRegistration")[0].reset();
+                        window.location.href = '@Url.Action("Verification", "User")?MobileNumber=' + AmobileNumber;
+                    }
+
+                },
+                error: function (data) {
+
+                    alert("Some Error Occured");
+                    jQuery("#diverror").show();
+                }
+            });
+        }
+    }
+    jQuery(function () {
+        jQuery("#ddlState").change(function () {
+
+            var stagId= jQuery("#ddlState").val();
+
+            DistrictList=@(Html.Raw(Json.Encode(ViewBag.DistrictLIst)));
+            var length=Object.keys(DistrictList).length;
+            jQuery('#ddlDistrict').empty();
+            jQuery("#ddlDistrict").html("");
+            jQuery("#ddlDistrict").append
+            (jQuery('<option></option>').val("").html("---Select District---"));
+            for(i=0;i<length;i++){
+                if(DistrictList[i].ID==stagId){
+                    jQuery("#ddlDistrict").append(jQuery('<option></option>').val(DistrictList[i].value).html(DistrictList[i].Name))}
+
+            }
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+
+        })});
+    jQuery(function () {
+        jQuery("#ddlDistrict").change(function () {
+
+            var DistID= jQuery("#ddlDistrict").val();
+
+            //alert(jQuery("#ddlState option:selected").text());
+
+            MandalList=@(Html.Raw(Json.Encode(ViewBag.MandalList)));
+            var length=Object.keys(MandalList).length;
+            jQuery('#ddlMandal').empty();
+            jQuery("#ddlMandal").html("");
+            jQuery("#ddlMandal").append
+            (jQuery('<option></option>').val("").html("---Select Mandal---"));
+            for(i=0;i<length;i++){
+                if(MandalList[i].ID==DistID){
+                    jQuery("#ddlMandal").append(jQuery('<option></option>').val(MandalList[i].value).html(MandalList[i].Name))}
+
+            }})});
+
+</script>
+@{Html.EnableClientValidation();}
+@{Html.EnableUnobtrusiveJavaScript();}
+<div id="divRegistration">
+@using (Html.BeginForm("Registration", "User", FormMethod.Post, new { id = "UserRegistration" }))
+    {
+    <div>
+        <label id="ErrorMessage"></label>
+    </div>
+    <div class="Registration">
+       
+        <table>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>Name<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright">@Html.TextBox("txtUserName", null, new { @class = "form-control", @placeholder = " Enter Your Name [max Lenth:50char]" })</td>
+                @*<td>@Html.ValidationMessageFor(m => m.txtUserName, "", new { @class = "error" })</td>*@
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>Phone Number<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright">@Html.TextBox("txtPhoneNumber", null, new { @class = "form-control", @placeholder = " Enter Your 10 digit PhoneNumber" })</td>
+                @*<td>@Html.ValidationMessageFor(m => m.txtPhoneNumber, "", new { @class = "error" })</td>*@
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>Password<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright">@Html.Password("txtPassword", null, new { @class = "password", @placeholder = " Password [max Lenth:20char]" })</td>
+                @*<td>@Html.ValidationMessageFor(m => m.txtPassword, "", new { @class = "error" })</td>*@
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>State<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright">@Html.DropDownList("ddlState", Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList)).Cast<RaiteRaju.ApplicationUtility.StateList>().Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString() }), "---Select State---", new { @class = "DropdownList", required = "required" })</td>
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>District<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright"><select id="ddlDistrict" class="DropdownList" required>
+    <option value="">---Select District---</option>
+</select> @*@Html.DropDownList("ddlDistrict", new SelectList(Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList))), "Select Category", new { @class = "DropdownList" })*@</td>
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>Mandal<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright"><select id="ddlMandal" class="DropdownList" required>
+                                     <option value="">---Select Mandal---</option></select>@*@Html.DropDownList("ddlMandal", new SelectList(Enum.GetValues(typeof(RaiteRaju.ApplicationUtility.StateList))), "Select Category", new { @class = "DropdownList" })*@</td>
+            </tr>
+            <tr class="tableRowRegistration">
+                <td id="tdLeft"><label>Village<span class="MandatoryStars">*</span>:</label></td>
+                <td id="tdright">@Html.TextBox("txtVillage", null, new { @class = "form-control", @placeholder = " Enter Villag Name [max Lenth:50char]" })</td>
+                @*<td>@Html.ValidationMessageFor(m => m.txtVillage, "", new { @class = "error" })</td>*@
+            </tr>
+            @*<tr class="tableRowRegistration">
+                <td id="tdLeft"><label>MailID:</label></td>
+                <td id="tdright">@Html.TextBox("txtMailId", null, new { @class = "form-control", @placeholder = " Enter EmailId [max Lenth:50char]" })</td>
+                <td>@Html.ValidationMessageFor(m => m.txtMailId, "", new { @class = "error" })</td>
+            </tr>*@
+        </table>
+    </div>
+    <div>
+        <table class="tablebutton">
+            <tr>
+
+                <td id="tdLeft"><input id="btnRegister" type="button" value="Register" class="clsbutton" onclick="fnRegistration()" /></td>
+                <td id="tdright"><input id="btnCancel" type="button" value="Cancel" class="clsbutton" onclick="fnCancel()" /></td>
+            </tr>
+            <tr><td colspan="2" style="font-size:10px;font-family:Verdana,sans-serif">By creating account with RaiteRaju, I agree to <a href="/Footer/TermsAndConditions">Terms and Conditions</a></tr>
+        </table>
+    </div>
+    
+    <div id="diverror">
+        <label>@ViewBag.ErrorMessage</label>
+    </div>
+    }
+</div>
